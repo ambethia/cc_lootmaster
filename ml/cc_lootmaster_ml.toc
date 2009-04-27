@@ -1,0 +1,12 @@
+## Interface: 30100
+## Title: CCLootMaster - |cFFFF8080ML|r
+## Author: Jason L Perry
+## Version: @project-version@
+## Notes: Master loot distributing system (Master Looter)
+## X-Category: Guild
+## RequiredDeps: cc_lootmaster
+## DefaultState: Disabled
+## LoadOnDemand: 1
+lootmaster_ml.lua
+lootmaster_ml_ui.lua
+lootmaster_options.lua
