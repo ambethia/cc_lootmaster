@@ -466,15 +466,7 @@ function LootMaster:UpdateLootUI()
             color = {['r']=1,['g']=1,['b']=1}
         end
         lootFrame.lblItem:SetVertexColor(color.r, color.g, color.b);
-        
-        local gp = data.gpvalue or 0;
-        if data.gpvalue2 and data.gpvalue2~='' then
-            gp = gp .. format(' or %s', data.gpvalue2)
-        end
-        if data.gpvalue_greed and data.gpvalue_greed~='' then
-            gp = gp .. format(' (greed GP: %s)', data.gpvalue_greed)
-        end
-        
+
         if not data.notesAllowed then
             lootFrame.btnNote:Hide();
             lootFrame.tbNote:Hide();
@@ -490,7 +482,7 @@ function LootMaster:UpdateLootUI()
             end
         end
         
-        lootFrame.lblInfo:SetText(format("looter: %s, ilevel: %s, GP: %s", data.lootmaster or 'unknown', data.ilevel or -1, gp));        
+        lootFrame.lblInfo:SetText(format("Looter: %s, iLevel: %s", data.lootmaster or 'unknown', data.ilevel or -1));        
         lootFrame.itemIcon:SetNormalTexture(data.texture);        
         lootFrame:SetPoint("TOP",self.frame,"TOP",0, -30 - ((LM_LOOTFRAME_PADDING+LM_LOOTFRAME_HEIGHT) * (visibleLoot-1)))
         
