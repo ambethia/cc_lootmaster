@@ -1531,27 +1531,18 @@ function LootMasterML:CHAT_MSG_LOOT( event, message )
     
     -- We did, now get some info about the loot adressee
     local lootType = self:GetCandidateData( sLink, sPlayer, 'lootType' ) or LootMaster.LOOTTYPE.UNKNOWN;
-    local lootGP = tonumber(self:GetCandidateData( sLink, sPlayer, 'lootGP' )) or -1;
-    
-    if lootType==LootMaster.LOOTTYPE.GP and lootGP~=0 then
-        if CanEditOfficerNote() and EPGP and EPGP.IncGPBy then
-            EPGP.IncGPBy(EPGP, tostring(sPlayer) or 'nil', tostring(sLink) or 'nil', lootGP)
-        else
-            self:Print( format("<ERROR> Could not increase GP in officernotes for %s %s (EPGP not installed or no rights?!)", sPlayer or 'unknown player', sLink or 'unknown loot') )
-        end
-    end;
-    
+
     -- now send everyone in raid/party/candidates some info about the drop so they can update their ui
     if GetNumRaidMembers()>0 then
         self:Debug("send to raid");
-        self:SendCommand( 'LOOTED', format('%s^%s^%s^%s', sPlayer, sLink, lootType, lootGP ), 'RAID' );
+        self:SendCommand( 'LOOTED', format('%s^%s^%s', sPlayer, sLink, lootType ), 'RAID' );
     elseif GetNumPartyMembers()>0 then
         self:Debug("send to party");
-        self:SendCommand( 'LOOTED', format('%s^%s^%s^%s', sPlayer, sLink, lootType, lootGP ), 'PARTY' );
+        self:SendCommand( 'LOOTED', format('%s^%s^%s', sPlayer, sLink, lootType ), 'PARTY' );
     else
         self:Debug("send to candidates");
         for candidate, id in pairs(loot.candidates) do
-            self:SendCommand( 'LOOTED', format('%s^%s^%s^%s', sPlayer, sLink, lootType, lootGP ), candidate );
+            self:SendCommand( 'LOOTED', format('%s^%s^%s', sPlayer, sLink, lootType ), candidate );
         end
     end
     

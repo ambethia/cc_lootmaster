@@ -116,7 +116,7 @@ function LootMaster:CommandReceived(prefix, message, distribution, sender)
         -- Update the UI and send some info to ct_raidtracker if its active.
         
         -- Message gets received
-        local player, link, lootType, lootGP = strsplit("^", message)
+        local player, link, lootType = strsplit("^", message)
         
         self:Debug('looted: ' .. message)
         
@@ -137,18 +137,16 @@ function LootMaster:CommandReceived(prefix, message, distribution, sender)
         
         lootTypeID = tonumber(lootType) or LootMaster.LOOTTYPE.UNKNOWN;
         lootType = LootMaster.LOOTTYPE[lootTypeID] or LootMaster.LOOTTYPE[LootMaster.LOOTTYPE.UNKNOWN];
-        lootGP = tonumber(lootGP) or -1;
         
-        local debug = self:RegisterCTRaidTrackerLoot( player, link, lootTypeID, lootGP ) or '';
-        debug = debug .. self:RegisterHeadCountLoot( player, link, lootTypeID, lootGP ) or '';
+        debug = self:RegisterHeadCountLoot( player, link, lootTypeID ) or '';
         
-        self:Print( format(lootType.TEXT, player or 'nil', link or 'nil', lootGP or '', debug or '') );
+        self:Print( format(lootType.TEXT, player or 'nil', link or 'nil', debug or '') );
 	else
 		self:Print( format("CDRCV(%s): %s", tostring(command), tostring(message) ) )
 	end
 end
 
-function LootMaster:RegisterHeadCountLoot( player, link, lootTypeID, lootGP )
+function LootMaster:RegisterHeadCountLoot( player, link, lootTypeID )
     
     local _,_,itemID = strfind(link, 'Hitem:(%d+)');
     if not itemID then return ' (Invalid link)' end;
@@ -185,51 +183,13 @@ function LootMaster:RegisterHeadCountLoot( player, link, lootTypeID, lootGP )
     
     -- Everything is ok now, register the cost.
     
-    if not lootGP or tonumber(lootGP)<=0 then lootGP=0 end;
-            
     if lootTypeID == LootMaster.LOOTTYPE.BANK then
         lastLoot:setNote('bank');
-        lootGP = 0;
     elseif lootTypeID == LootMaster.LOOTTYPE.DISENCHANT then
         lastLoot:setNote('disenchanted');
-        lootGP = 0;
     end;            
-            
-    lastLoot:setCost(lootGP);
-    return ' (Loot registered in HeadCount)'
-end
 
-function LootMaster:RegisterCTRaidTrackerLoot( player, link, lootTypeID, lootGP )
-    
-    local _,_,itemID = strfind(link, 'Hitem:(%d+)');
-    if not itemID then return ' (Invalid link)' end;
-    
-    if not CT_RaidTracker_RaidLog then return '' end
-    if not CT_RaidTracker_GetCurrentRaid
-            or not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]
-            or not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Loot"] then
-        return ' (Unable to register in CT_RaidTracker; no raid started)'
-    end
-    
-    for index, data in ipairs( CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Loot"] ) do
-        if data.player == player and strsplit(':', data.item.id) == itemID then
-            
-            if not lootGP or tonumber(lootGP)<=0 then lootGP=0 end;
-            
-            if lootTypeID == LootMaster.LOOTTYPE.BANK then
-                CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Loot"][index]['player'] = 'bank';
-                lootGP = nil;
-            elseif lootTypeID == LootMaster.LOOTTYPE.DISENCHANT then
-                CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Loot"][index]['player'] = 'disenchanted';
-                lootGP = nil;
-            end;            
-            
-            CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Loot"][index]['costs'] = lootGP;
-            return ' (Loot registered in CT_RaidTracker)'
-        end
-    end
-    
-    return ' (Loot not registered in CT_RaidTracker; please set it manually)'
+    return ' (Loot registered in HeadCount)'
 end
 
 function LootMaster:HasLoot( link )
