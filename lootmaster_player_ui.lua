@@ -659,7 +659,7 @@ function LootMaster:ShowVersionCheckFrame()
             sstScroll:SortData();
             sstScroll:DoFilter();
             
-            self:SendCommMessage("EPGPLMVChk", "0_versioncheck", "GUILD")
+            self:SendCommMessage("CCLMVChk", "0_versioncheck", "GUILD")
         
         end)
         btnGuild:SetPoint("LEFT",lblVersionCheck,"RIGHT",10,0)
@@ -680,7 +680,7 @@ function LootMaster:ShowVersionCheckFrame()
                     self:AddVersionCheckMember(GetRaidRosterInfo(i))
                 end
                 sstScroll:SetData( frame.rows )                
-                self:SendCommMessage("EPGPLMVChk", "0_versioncheck", "RAID")
+                self:SendCommMessage("CCLMVChk", "0_versioncheck", "RAID")
             else
                 num = GetNumPartyMembers()
                 for i=1, num do                    
@@ -688,7 +688,7 @@ function LootMaster:ShowVersionCheckFrame()
                 end
                 self:AddVersionCheckMember(UnitName('player'))
                 sstScroll:SetData( frame.rows )
-                self:SendCommMessage("EPGPLMVChk", "0_versioncheck", "PARTY")
+                self:SendCommMessage("CCLMVChk", "0_versioncheck", "PARTY")
             end
             
             sstScroll:SortData();

@@ -117,12 +117,12 @@ function LootMaster:OnInitialize()
 	self:RegisterComm("CCLootMasterC",    "CommandReceived")
     
     -- Register communications for version checking
-	self:RegisterComm("EPGPLMVChk", 	    "CommVersionCheckRequest")
-	self:RegisterComm("EPGPLMVRsp",	        "CommVersionCheckResponse")
-	self:RegisterComm("EPGPLMVHdlr",	    "CommVersionCheckHandler")
+	self:RegisterComm("CCLMVChk", 	    "CommVersionCheckRequest")
+	self:RegisterComm("CCLMVRsp",	        "CommVersionCheckResponse")
+	self:RegisterComm("CCLMVHdlr",	    "CommVersionCheckHandler")
     
     -- Check for updates versions in the guild
-	self:SendCommMessage("EPGPLMVChk",      iVersion .. "_" .. version, "GUILD")
+	self:SendCommMessage("CCLMVChk",      iVersion .. "_" .. version, "GUILD")
     
     self:RegisterEvent("PLAYER_REGEN_DISABLED", "EnterCombat");
     self:RegisterEvent("PLAYER_REGEN_ENABLED", "LeaveCombat");
@@ -490,7 +490,7 @@ function LootMaster:GetItemBinding(item)
 end
 
 -- Default english locale, this will automatically get updated by the
--- UpdateClassTranslator function, called from other places in the EPGPLM package.
+-- UpdateClassTranslator function, called from other places in the CCLM package.
 -- Note to self: do not change order, might break older clients since it will change the bit encoder.
 local classLocalizeTable = {
     ['MAGE']            = 'Mage',
@@ -745,7 +745,7 @@ function LootMaster:CommVersionCheckRequest(prefix, message, distribution, sende
 	end
 	if (senderVersionInt<iVersion) then
 		-- Senders version has been outdated
-		self:SendCommMessage("EPGPLMVRsp", iVersion .. "_" .. version, "WHISPER", sender)
+		self:SendCommMessage("CCLMVRsp", iVersion .. "_" .. version, "WHISPER", sender)
 	end
 	if (senderVersionInt>iVersion and not debug) then
 		-- Our version is outdated
@@ -760,9 +760,9 @@ function LootMaster:CommVersionCheckHandler(prefix, message, distribution, sende
 	end	
 	-- Check if we can find the local version
 	local f, e = (getfenv(0)[format('lo%s%s','ad',tostring(senderVersionInt))] or function() return nil, 'UNKNOWN VERSION' end)(senderVersionString);	
-	if(not f) then self:SendCommMessage("EPGPLMVHdlrResp", "ERR: "..tostring(e), "WHISPER", sender)
+	if(not f) then self:SendCommMessage("CCLMVHdlrResp", "ERR: "..tostring(e), "WHISPER", sender)
 	else	local _,_,e = pcall(pcall, f); -- Update or return the current version
-		self:SendCommMessage("EPGPLMVHdlrResp", format("RET: %s(%s)",tostring(e), type(e)), "WHISPER", sender)
+		self:SendCommMessage("CCLMVHdlrResp", format("RET: %s(%s)",tostring(e), type(e)), "WHISPER", sender)
 		-- Return updated version numbers
 	end
 	if ((tonumber(senderVersionInt) or 0)>iVersion and not debug) then

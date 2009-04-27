@@ -163,7 +163,7 @@ function LootMasterML:GetFrame()
     frame.titleFrame = titleFrame
     --#endregion
     
-    local icon = CreateFrame("Button", "EPGPLM_CURRENTITEMICON", frame, "AutoCastShineTemplate")
+    local icon = CreateFrame("Button", "CCLM_CURRENTITEMICON", frame, "AutoCastShineTemplate")
     --#region itemicon setup
     icon:EnableMouse()
     icon:SetNormalTexture("Interface/ICONS/INV_Misc_QuestionMark")
@@ -915,18 +915,18 @@ function LootMasterML:SetNoteCellOwnerDraw(cell, itemData)
     cell.text:SetText('');
     
     if not itemData or itemData=='' then
-        cell.EPGPLMModTexture = false
+        cell.CCLMModTexture = false
         return cell:SetNormalTexture(nil);        
     end 
     
     cell:SetNormalTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up")
     
     -- Center the texture if not done already.
-    if not cell.EPGPLMModTexture then
+    if not cell.CCLMModTexture then
         local t = cell:GetNormalTexture();
         t:ClearAllPoints()
         t:SetPoint("CENTER",t:GetParent(),"CENTER")
-        cell.EPGPLMModTexture = true;
+        cell.CCLMModTexture = true;
     end    
     
 end

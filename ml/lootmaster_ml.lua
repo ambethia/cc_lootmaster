@@ -88,11 +88,11 @@ function LootMasterML:OnInitialize()
     -- NOTE: Only tested with normal wow lootframes, not using XLoot etc.
     for slot=1, LOOTFRAME_NUMBUTTONS do
         local btn = getglobal("LootButton"..slot);
-        if btn and not btn.oldClickEventEPGPLM then
-            btn.oldClickEventEPGPLM = btn:GetScript("OnClick");
+        if btn and not btn.oldClickEventCCLM then
+            btn.oldClickEventCCLM = btn:GetScript("OnClick");
             btn:SetScript("OnClick", function(btnObj, ...)
                 if not IsAltKeyDown() then
-                    return btnObj.oldClickEventEPGPLM(btnObj, ...)
+                    return btnObj.oldClickEventCCLM(btnObj, ...)
                 end
                 return LootButton_OnClick(btnObj, ...);
             end);
@@ -1568,7 +1568,7 @@ end
 ]]
 function LootMasterML:OPEN_MASTER_LOOT_LIST()
     
-    -- Check if EPGPLM needs to track the loot.
+    -- Check if CCLM needs to track the loot.
     if not self:TrackingEnabled() then return end;
 
 	-- Close the default confirm window
