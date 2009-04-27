@@ -9,14 +9,12 @@ local LOOTBUTTON_PADDING = 6
 
 -- Column for the scrollingTable
 local gearBgColor   = {["r"] = 0.15, ["g"] = 0.15, ["b"] = 0.15, ["a"] = 1.0 }
-local epgpColor     = {["r"] = 0.45, ["g"] = 0.45, ["b"] = 0.45, ["a"] = 1.0 }
-
 local sstScrollCols = {
        { ["name"] = " ",         ["width"] = 20, ["align"] = "CENTER" },   
        { ["name"] = "Candidate", ["width"] = 100, ["align"] = "LEFT" },    
        { ["name"] = "Rank",      ["width"] = 100, ["align"] = "LEFT" },
        { ["name"] = "Response",  ["width"] = 210, ["align"] = "LEFT",    ["defaultsort"] = "desc", ["sort"] = "desc", ["color"] = {["r"] = 0.25, ["g"] = 1.00, ["b"] = 0.25, ["a"] = 1.0 }, ["sortnext"]=10 }, --, 
-       { ["name"] = "Roll",      ["width"] = 35,  ["align"] = "RIGHT",   ["defaultsort"] = "asc", ["sort"] = "asc", ["color"] = epgpColor},
+       { ["name"] = "Roll",      ["width"] = 35,  ["align"] = "RIGHT",   ["defaultsort"] = "asc",  ["sort"] = "asc",  ["color"] = {["r"] = 0.45, ["g"] = 0.45, ["b"] = 0.45, ["a"] = 1.0 }},
 
        { ["name"] = "Note",      ["width"] = 30,  ["align"] = "RIGHT"},
 
@@ -779,228 +777,188 @@ function LootMasterML:CandidateDropDownInitialize( frame, level, menuList )
     info.text = '-DEBUG- Discard loot';
     info.tooltipTitle = nil;
     info.tooltipText = nil;
-	info.func = function()
-        LootMasterML.RemoveLoot(LootMasterML, LootMasterML.CandidateDropDown.selectedLink);
-        LootMasterML.Show(LootMasterML);
-    end;
-	UIDropDownMenu_AddButton(info,UIDROPDOWNMENU_MENU_LEVEL);]]--
+    info.func = function()
+      LootMasterML.RemoveLoot(LootMasterML, LootMasterML.CandidateDropDown.selectedLink);
+      LootMasterML.Show(LootMasterML);
+  end;
+  UIDropDownMenu_AddButton(info,UIDROPDOWNMENU_MENU_LEVEL);]]--
 
 end
 
 function LootMasterML:OnCandidateRowRightClick( candidate, link, row )
-    self.CandidateDropDown.selectedCandidate = candidate;
-    self.CandidateDropDown.selectedLink = link;
-    self.CandidateDropDown.selectedRow = row;
-    
-    ToggleDropDownMenu(1, nil, self.CandidateDropDown, "cursor", 0, 0);
+  self.CandidateDropDown.selectedCandidate = candidate;
+  self.CandidateDropDown.selectedLink = link;
+  self.CandidateDropDown.selectedRow = row;
+
+  ToggleDropDownMenu(1, nil, self.CandidateDropDown, "cursor", 0, 0);
 end
 
 function LootMasterML:SetNoteCellOwnerDraw(cell, itemData)
-    
-    cell.text:SetText('');
-    
-    if not itemData or itemData=='' then
-        cell.CCLMModTexture = false
-        return cell:SetNormalTexture(nil);        
-    end 
-    
-    cell:SetNormalTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up")
-    
-    -- Center the texture if not done already.
-    if not cell.CCLMModTexture then
-        local t = cell:GetNormalTexture();
-        t:ClearAllPoints()
-        t:SetPoint("CENTER",t:GetParent(),"CENTER")
-        cell.CCLMModTexture = true;
-    end    
-    
+  cell.text:SetText('');
+  
+  if not itemData or itemData=='' then
+    cell.CCLMModTexture = false
+    return cell:SetNormalTexture(nil);        
+  end 
+  cell:SetNormalTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up")
+
+  -- Center the texture if not done already.
+  if not cell.CCLMModTexture then
+    local t = cell:GetNormalTexture();
+    t:ClearAllPoints()
+    t:SetPoint("CENTER",t:GetParent(),"CENTER")
+    cell.CCLMModTexture = true;
+  end
 end
 
 function LootMasterML:SetGearCellOwnerDraw(cell, itemData)
-    
-    if not itemData or itemData=='' then
-        cell.text:SetText('');
-        cell:SetNormalTexture(nil)
-        return;
-    end   
-    
-    local link, ilevel, itemTexture = strsplit("^", itemData)
-    
+  if not itemData or itemData=='' then
     cell.text:SetText('');
-    cell:SetNormalTexture(itemTexture)
+    cell:SetNormalTexture(nil)
+    return;
+  end   
+  
+  local link, ilevel, itemTexture = strsplit("^", itemData)
+  
+  cell.text:SetText('');
+  cell:SetNormalTexture(itemTexture)
 end
 
 function LootMasterML:SetClassIconCellOwnerDraw(cell, itemData)
-    
-    cell.text:SetText('');
-    
-    if not itemData or itemData=='' or not CLASS_ICON_TCOORDS[itemData] then        
-        cell:SetNormalTexture(nil)
-        return;
-    end   
-    
-    local coords = CLASS_ICON_TCOORDS[itemData];    
-    cell:SetNormalTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes");    
-    cell:GetNormalTexture():SetTexCoord(coords[1],coords[2],coords[3],coords[4]);
+  cell.text:SetText('');
+  
+  if not itemData or itemData=='' or not CLASS_ICON_TCOORDS[itemData] then        
+    cell:SetNormalTexture(nil)
+    return;
+  end   
+  
+  local coords = CLASS_ICON_TCOORDS[itemData];    
+  cell:SetNormalTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes");    
+  cell:GetNormalTexture():SetTexCoord(coords[1],coords[2],coords[3],coords[4]);
 end
 
 function LootMasterML:ShowGearInspectPopup( candidate, item ) 
-    local foundGear = self:GetCandidateData(item, candidate, "foundGear") or false;
-    if not foundGear then
-        self:ShowInfoPopup( candidate, 'Click to retrieve current equipment.' );    
-    end    
+  local foundGear = self:GetCandidateData(item, candidate, "foundGear") or false;
+  if not foundGear then
+    self:ShowInfoPopup( candidate, 'Click to retrieve current equipment.' );    
+  end    
 end
 
 function LootMasterML:ShowNoteCellPopup( candidate, item )    
-    local itemData = self:GetCandidateData(item, candidate, 'note');
-    if not itemData or itemData=='' then return end;
-    
-    self:ShowInfoPopup('Note added by ' .. candidate .. ':', itemData or '');    
+  local itemData = self:GetCandidateData(item, candidate, 'note');
+  if not itemData or itemData=='' then return end;
+  
+  self:ShowInfoPopup('Note added by ' .. candidate .. ':', itemData or '');    
 end
 
 function LootMasterML:ShowGearCellPopup( candidate, item, dataName )
-    
-    local itemData = self:GetCandidateData(item, candidate, dataName);
-    if not itemData or itemData=='' then return end;
-    
-    local link, gpvalue, ilevel, gpvalue2, itemTexture = strsplit("^", itemData);
-    
-    GameTooltip:SetOwner(self.frame, "ANCHOR_NONE")
-    GameTooltip:SetHyperlink( link )
-	GameTooltip:Show()
-    GameTooltip:SetPoint("TOPLEFT", self.frame , "TOPRIGHT", 0, -5);
-    
+  local itemData = self:GetCandidateData(item, candidate, dataName);
+  if not itemData or itemData=='' then return end;
+
+  local link, ilevel, itemTexture = strsplit("^", itemData);
+
+  GameTooltip:SetOwner(self.frame, "ANCHOR_NONE")
+  GameTooltip:SetHyperlink( link )
+  GameTooltip:Show()
+  GameTooltip:SetPoint("TOPLEFT", self.frame , "TOPRIGHT", 0, -5);
 end
 
 function LootMasterML:ShowCandidateCellPopup( candidate, item )
-    if not candidate then return nil end
-    GameTooltip:SetOwner(self.frame, "ANCHOR_NONE")
-    GameTooltip:SetUnit(candidate)
-	GameTooltip:Show()
-    GameTooltip:SetPoint("TOPLEFT", self.frame , "TOPRIGHT", 0, -5);
+  if not candidate then return nil end
+  GameTooltip:SetOwner(self.frame, "ANCHOR_NONE")
+  GameTooltip:SetUnit(candidate)
+  GameTooltip:Show()
+  GameTooltip:SetPoint("TOPLEFT", self.frame , "TOPRIGHT", 0, -5);
 end
 
 function LootMasterML:ShowRollCellPopup( candidate, item )
-    
-    local roll = self:GetCandidateData(item, candidate, 'roll');
-    if not roll then return end;
-    
-    self:ShowInfoPopup( 'Random roll',
-                        'This value is only needed when two candidates have the same PR.',
-                        'It is just a simple random roll to decide who gets the loot',
-                        format('%s rolled %s.', candidate, roll)
-    );    
+  local roll = self:GetCandidateData(item, candidate, 'roll');
+  if not roll then return end;
+  self:ShowInfoPopup('Random roll', format('%s rolled %s.', candidate, roll));
 end
 
 function LootMasterML:SetGearCelliLVL( cell, self, candidate, item )   
-    
-    local foundGear = self:GetCandidateData(item, candidate, "foundGear") or false;
-    if not foundGear then
-        cell.text:SetText( '- inspect -' );
-        return;
-    end
-    
-    local s = {};
-    local itemData = self:GetCandidateData(item, candidate, "currentitem");
-    local _, ilevel = strsplit("^", itemData or '');
-    if ilevel then tinsert(s, ilevel) end
+  local foundGear = self:GetCandidateData(item, candidate, "foundGear") or false;
+  if not foundGear then
+    cell.text:SetText( '- inspect -' );
+    return;
+  end
 
-    itemData = self:GetCandidateData(item, candidate, "currentitem2");
-    _, ilevel = strsplit("^", itemData or '');
-    if ilevel then tinsert(s, ilevel) end
+  local s = {};
+  local itemData = self:GetCandidateData(item, candidate, "currentitem");
+  local _, ilevel = strsplit("^", itemData or '');
+  if ilevel then tinsert(s, ilevel) end
 
-    cell.text:SetText( strjoin(', ', unpack(s)))   
-end
+  itemData = self:GetCandidateData(item, candidate, "currentitem2");
+  _, ilevel = strsplit("^", itemData or '');
+  if ilevel then tinsert(s, ilevel) end
 
-function LootMasterML:SetGearCellGP( cell, self, candidate, item )    
-    local s = {};
-    local itemData = self:GetCandidateData(item, candidate, "currentitem");
-    local _, gpvalue, _, _, _ = strsplit("^", itemData or '');
-    if gpvalue then tinsert(s, gpvalue) end    
-    
-    itemData = self:GetCandidateData(item, candidate, "currentitem2");
-    _, gpvalue, _, _, _ = strsplit("^", itemData or '');
-    if gpvalue then tinsert(s, gpvalue) end
-    
-    cell.text:SetText( strjoin(', ', unpack(s)))
-end
-
-function LootMasterML:SetCandidateEPGPCellUserDraw( cell, self, candidate, item )
-    if not EPGP or not EPGP.GetEPGP then
-        return cell.text:SetText( '?' );
-    end
-    local ok, ep, gp, main = pcall(EPGP.GetEPGP, EPGP, candidate)
-    if not ok then
-        return cell.text:SetText( '?' );
-    end
-    cell.text:SetText( format('%s/%s', tostring(ep), tostring(gp)) );
+  cell.text:SetText( strjoin(', ', unpack(s)))   
 end
 
 function LootMasterML:GetCandidateCellColor( candidate, item, dataName, defaultColor )
-    --local itemData = self:GetCandidateData( item, candidate, "version" );
-    
-    local r, g, b = self:GetCandidateResponseColor( candidate, item, nil );
-    return {["r"] = r or 1, ["g"] = g or 0, ["b"] = b or 1, ["a"] = 1.0 };
+  --local itemData = self:GetCandidateData( item, candidate, "version" );    
+  local r, g, b = self:GetCandidateResponseColor( candidate, item, nil );
+  return {["r"] = r or 1, ["g"] = g or 0, ["b"] = b or 1, ["a"] = 1.0 };
 end
 
 function LootMasterML:GetCandidateClassCellColor( candidate, item, dataName, defaultColor )    
-    local color = RAID_CLASS_COLORS[self:GetCandidateData(item, candidate, "unitclass")];
-    if not color then
-        -- if class not found display epic color.
-        color = {["r"] = 0.63921568627451, ["g"] = 0.2078431372549, ["b"] = 0.93333333333333, ["a"] = 1.0 }
-    else
-        color.a = 1.0;
-    end
-    return color;
+  local color = RAID_CLASS_COLORS[self:GetCandidateData(item, candidate, "unitclass")];
+  if not color then
+    -- if class not found display epic color.
+    color = {["r"] = 0.63921568627451, ["g"] = 0.2078431372549, ["b"] = 0.93333333333333, ["a"] = 1.0 }
+  else
+    color.a = 1.0;
+  end
+  return color;
 end
+
 function LootMasterML:GetCandidateResponseColor( candidate, item, response )
-    if not response then
-        response = tonumber(self:GetCandidateData(item, candidate, "response"));
-    end
-    
-    if not response or not LootMaster.RESPONSE[response] then
-        return 1,0,1
-    end
-    
-    return unpack( LootMaster.RESPONSE[response].COLOR or {1,0,1} )    
+  if not response then
+    response = tonumber(self:GetCandidateData(item, candidate, "response"));
+  end
+
+  if not response or not LootMaster.RESPONSE[response] then
+    return 1,0,1
+  end
+
+  return unpack( LootMaster.RESPONSE[response].COLOR or {1,0,1} )    
 end
 
 function LootMasterML:SetCandidateResponseCellUserDraw( cell, self, candidate, item )
-    local response = tonumber(self:GetCandidateData(item, candidate, "response"));
-    local autoPass = self:GetCandidateData(item, candidate, "autoPass");
-    
-    local text = nil;
-      
-    if response == LootMaster.RESPONSE.DISENCHANT then
-        if autoPass then
-            text = format('Auto pass; Enchanter (%s)',self:GetCandidateData(item, candidate, "enchantingSkill") or 0);
-        else
-            text = format('Pass; Enchanter (%s)',self:GetCandidateData(item, candidate, "enchantingSkill") or 0);
-        end
-        
-    elseif LootMaster.RESPONSE[response] then        
-        text = LootMaster.RESPONSE[response].TEXT  
-        
+  local response = tonumber(self:GetCandidateData(item, candidate, "response"));
+  local autoPass = self:GetCandidateData(item, candidate, "autoPass");
+
+  local text = nil;
+
+  if response == LootMaster.RESPONSE.DISENCHANT then
+    if autoPass then
+      text = format('Auto pass; Enchanter (%s)',self:GetCandidateData(item, candidate, "enchantingSkill") or 0);
     else
-        text = 'resp: ' .. self:GetCandidateData(item, candidate, "response");
-    end
-    
-    -- Add looted status message when candidate has looted the item.
-    if self:GetCandidateData(item, candidate, "looted") then
-        return cell.text:SetText( (text or '')  .. '; Looted' )
-    end
-    
-    return cell.text:SetText( text or '' )
+      text = format('Pass; Enchanter (%s)',self:GetCandidateData(item, candidate, "enchantingSkill") or 0);
+    end   
+  elseif LootMaster.RESPONSE[response] then        
+    text = LootMaster.RESPONSE[response].TEXT        
+  else
+    text = 'resp: ' .. self:GetCandidateData(item, candidate, "response");
+  end
+
+  -- Add looted status message when candidate has looted the item.
+  if self:GetCandidateData(item, candidate, "looted") then
+    return cell.text:SetText( (text or '')  .. '; Looted' )
+  end
+
+  return cell.text:SetText( text or '' )
 end
 
 function LootMasterML:SetCandidateRollCellUserDraw( cell, self, candidate, item )
-    local roll = self:GetCandidateData(item, candidate, "roll");    
-      
-    if roll then
-        cell.text:SetText( floor(roll) );        
-    else
-        cell.text:SetText( '?' );
-    end
+  local roll = self:GetCandidateData(item, candidate, "roll");    
+
+  if roll then
+    cell.text:SetText( floor(roll) );        
+  else
+    cell.text:SetText( '?' );
+  end
 end
 
 function LootMasterML:HideGearCellPopup( candidate, item, dataName )
@@ -1008,17 +966,17 @@ function LootMasterML:HideGearCellPopup( candidate, item, dataName )
 end
 
 function LootMasterML:OnGearInspectClick( candidate, item )
-    if self:InspectCandidate( item, candidate ) then
-        self.frame.sstScroll:SortData();
-        self.frame.sstScroll:DoFilter();
-    else
-        self:Print( format('%s is offline, out of range or not grouped, unable to inspect.', candidate or 'Unknown') )
-    end
+  if self:InspectCandidate( item, candidate ) then
+    self.frame.sstScroll:SortData();
+    self.frame.sstScroll:DoFilter();
+  else
+    self:Print( format('%s is offline, out of range or not grouped, unable to inspect.', candidate or 'Unknown') )
+  end
 end
 
 function LootMasterML:OnGearCellClick( candidate, item, dataName )
-    if ( IsModifiedClick() ) then
-        local link, _, _, _, _ = strsplit("^", self:GetCandidateData(item, candidate, dataName) or '');
-		HandleModifiedItemClick(link);
-    end
+  if ( IsModifiedClick() ) then
+    local link = strsplit("^", self:GetCandidateData(item, candidate, dataName) or '');
+    HandleModifiedItemClick(link);
+  end
 end

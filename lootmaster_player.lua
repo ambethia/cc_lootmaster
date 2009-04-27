@@ -49,57 +49,55 @@ end
 	Event gets triggered when candidate receives a message from the Masterlooter
 ]]
 function LootMaster:CommandReceived(prefix, message, distribution, sender)
-	local _,_,command, message = string.find(message, "^([%a_]-):(.*)$")
-	command = strupper(command or '');
-	message = message or '';	
+  local _,_,command, message = string.find(message, "^([%a_]-):(.*)$")
+  command = strupper(command or '');
+  message = message or '';	
 
-	if command == 'DO_YOU_WANT' then
+  if command == 'DO_YOU_WANT' then
 
-		-- Masterlooter wants to know from us if we'd like to have the item.
-		-- Lets show the gui and ask the player for input.
+    -- Masterlooter wants to know from us if we'd like to have the item.
+    -- Lets show the gui and ask the player for input.
 
-		local itemID, ilevel, binding, slot, quality, timeout, link, texture, notesAllowed, autoPassClassList = strsplit("^", message)
+    local itemID, ilevel, binding, slot, quality, timeout, link, texture, notesAllowed, autoPassClassList = strsplit("^", message)
+
+    notesAllowed = ((tonumber(notesAllowed or 0) or 0) == 1)
+
+    -- Send the master loot our current gear and version number
+    self:SendCommand( 'GEAR', format('%s^%s^%s', itemID, self.iVersion or 0, self:GetGearByINVTYPE(slot, 'player')), sender)
+
+    autoPassClassList = LootMaster:DecodeUnlocalizedClasses(autoPassClassList or 0)        
+    if autoPassClassList and binding=='pickup' then
+        -- See if we can autopass this BoP item.
+        local _, playerClass = UnitClass("player");
         
-        notesAllowed = ((tonumber(notesAllowed or 0) or 0) == 1)
+        if playerClass and autoPassClassList[playerClass] then
+            -- there's a non empty classList and the players class is on the list,
+            -- player is not eligible to receive this BoP item, just autopass...
+            self:Print(format('Autopassing %s (not eligible)', link or 'unknown item'));
+            self:SendItemWanted(sender, itemID, LootMaster.RESPONSE.AUTOPASS)
+            return;
+        end            
+    end
 
-		-- local _, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture = GetItemInfo(link)
-        
-        -- Send the master loot our current gear and version number
-		self:SendCommand( 'GEAR', format('%s^%s^%s', itemID, self.iVersion or 0, self:GetGearByINVTYPE(slot, 'player')), sender)
-        
-        autoPassClassList = LootMaster:DecodeUnlocalizedClasses(autoPassClassList or 0)        
-        if autoPassClassList and binding=='pickup' then
-            -- See if we can autopass this BoP item.
-            local _, playerClass = UnitClass("player");
-            
-            if playerClass and autoPassClassList[playerClass] then
-                -- there's a non empty classList and the players class is on the list,
-                -- player is not eligible to receive this BoP item, just autopass...
-                self:Print(format('Autopassing %s (not eligible)', link or 'unknown item'));
-                self:SendItemWanted(sender, itemID, LootMaster.RESPONSE.AUTOPASS)
-                return;
-            end            
-        end
-
-        if not self:HasLoot(link) then
-          -- add the loot to the lootlist and redraw the ui
-          tinsert( self.lootList, {
-              ["lootmaster"]      = sender,
-              ["link"]            = link,
-              ["id"]              = itemID,
-              ["notesAllowed"]    = notesAllowed,
-              ["ilevel"]          = ilevel,
-              ["binding"]         = binding,
-              ["slot"]            = slot,
-              ["texture"]         = texture,
-              ["timeout"]         = tonumber(timeout),
-              ["timeoutLeft"]     = tonumber(timeout),
-              ["quality"]         = tonumber(quality)
-          });
-          
-          self.lootMLCache[link] = sender;
-          self:UpdateLootUI();
-        end
+    if not self:HasLoot(link) then
+      -- add the loot to the lootlist and redraw the ui
+      tinsert( self.lootList, {
+          ["lootmaster"]      = sender,
+          ["link"]            = link,
+          ["id"]              = itemID,
+          ["notesAllowed"]    = notesAllowed,
+          ["ilevel"]          = ilevel,
+          ["binding"]         = binding,
+          ["slot"]            = slot,
+          ["texture"]         = texture,
+          ["timeout"]         = tonumber(timeout),
+          ["timeoutLeft"]     = tonumber(timeout),
+          ["quality"]         = tonumber(quality)
+      });
+      
+      self.lootMLCache[link] = sender;
+      self:UpdateLootUI();
+    end
         
         
     elseif command == 'DISCARD' then
