@@ -987,131 +987,97 @@ function LootMasterML:AddCandidate( loot, candidate )
         initResponse = LootMaster.RESPONSE.AUTOPASS
     end    
 
-	tinsert( self.lootTable[itemID]['rowdata'],
-		 {  ["unitclass"]       = candidateClass,
-            ["onclick"]         = function(arg1, button, down) if button=='RightButton' then self:OnCandidateRowRightClick(candidate, loot, arg1) end end,
-			["cols"] = {
-                {["name"]       = 'class',
-				 ["value"]      = candidateClass or '',
-                 ["onenter"]    = addon.ShowCandidateCellPopup,
-                 ["onleave"]    = addon.HideGearCellPopup,
-                 ["userDraw"]   = addon.SetClassIconCellOwnerDraw,
-                 ["onenterargs"]= { self, candidate, itemID },
-                 ["onleaveargs"]= { self, candidate, itemID }
-                },
-                
-				{["name"]       = 'name',
-				 ["value"]      = candidate,
-                 ["onenter"]    = addon.ShowCandidateCellPopup,
-                 ["onleave"]    = addon.HideGearCellPopup,
-                 ["color"]      = self.GetCandidateClassCellColor,
-                 ["colorargs"]  = { self, candidate, itemID},
-                 ["onenterargs"]= { self, candidate, itemID },
-                 ["onleaveargs"]= { self, candidate, itemID }
-                },
-                 
-                {["name"]       = 'guildrank',
-				 ["value"]      = guildRankName,
-                 ["color"]      = self.GetCandidateCellColor,
-                 ["colorargs"]  = {self, candidate, itemID}},  
-                 
-                {["name"]       = 'response',
-				 ["value"]      = initResponse,
-                 ["args"]       = {self, candidate, itemID},
-                 ["userDraw"]   = addon.SetCandidateResponseCellUserDraw,
-                 ["color"]      = self.GetCandidateCellColor,
-                 ["colorargs"]  = {self, candidate, itemID}},
-				
-				{["name"]       = 'EP',
-				 ["value"]      = self.GetEP,
-                 ["userDraw"]   = addon.SetCellEPGPNumberFormatted,
-                 ["args"]       = {self, candidate, self.GetEP}},
-                 
-                {["name"]       = 'GP',
-				 ["value"]      = self.GetGP,
-                 ["userDraw"]   = addon.SetCellEPGPNumberFormatted,
-                 ["args"]       = {self, candidate, self.GetGP}},
-                 
-                {["name"]       = 'PR',
-				 ["value"]      = self.GetPR,
-                 ["userDraw"]   = addon.SetCellEPGPNumberFormatted,
-                 ["args"]       = {self, candidate, self.GetPR}},
-                 
-                {["name"]       = 'roll',
-				 ["value"]      = randomRoll,
-                 ["userDraw"]   = addon.SetCandidateRollCellUserDraw,                 
-                 ["onenter"]    = addon.ShowRollCellPopup,
-                 ["onleave"]    = addon.HideGearCellPopup,
-                 ["onenterargs"]= { self,candidate,itemID },
-                 ["onleaveargs"]= { self,candidate,itemID },
-                 ["args"]       = {self, candidate, itemID}},
-                 
-                 
-                {["name"]       = 'note',
-				 ["value"]      = '',
-                 ["userDraw"]   = addon.SetNoteCellOwnerDraw,
-                 ["onenter"]    = addon.ShowNoteCellPopup,
-                 ["onleave"]    = addon.HideInfoPopup,
-                 ["onenterargs"]= { self,candidate,itemID,'currentitem' },
-                 ["onleaveargs"]= { self,candidate,itemID,'currentitem' }
-                },
-                 
-                {["name"]       = ' ',
-				 ["value"]      = self.GetMinEPMatch,
-                 ["userDraw"]   = self.EmptyCellOwnerDraw,
-                 ["args"]       = {self, candidate}},     -- spacer, actually used for sorting the minEP matches first.
+    tinsert( self.lootTable[itemID]['rowdata'],
+      {  ["unitclass"]       = candidateClass,
+         ["onclick"]         = function(arg1, button, down) if button=='RightButton' then self:OnCandidateRowRightClick(candidate, loot, arg1) end end,
+         ["cols"] = {{
+           ["name"]       = 'class',
+           ["value"]      = candidateClass or '',
+           ["onenter"]    = addon.ShowCandidateCellPopup,
+           ["onleave"]    = addon.HideGearCellPopup,
+           ["userDraw"]   = addon.SetClassIconCellOwnerDraw,
+           ["onenterargs"]= { self, candidate, itemID },
+           ["onleaveargs"]= { self, candidate, itemID }},
 
-				{["name"]       = 'currentilevel',
-				 ["value"]      = '',
-                 ["args"]       = {self, candidate, itemID},
-                 ["onclick"]    = addon.OnGearInspectClick,
-                 ["onenter"]    = addon.ShowGearInspectPopup,
-                 ["onleave"]    = addon.HideGearCellPopup,
-                 ["userDraw"]   = addon.SetGearCelliLVL,
-                 ["onenterargs"]= { self,candidate,itemID },
-                 ["onleaveargs"]= { self,candidate,itemID },
-                 ["onclickargs"]= { self,candidate,itemID }
-                },
+          {["name"]       = 'name',
+           ["value"]      = candidate,
+           ["onenter"]    = addon.ShowCandidateCellPopup,
+           ["onleave"]    = addon.HideGearCellPopup,
+           ["color"]      = self.GetCandidateClassCellColor,
+           ["colorargs"]  = { self, candidate, itemID},
+           ["onenterargs"]= { self, candidate, itemID },
+           ["onleaveargs"]= { self, candidate, itemID }},
 
-				{["name"]       = 'currentgp',
-				 ["value"]      = '',
-                 ["args"]       = {self, candidate, itemID},
-                 ["onclick"]    = addon.OnGearInspectClick,
-                 ["onenter"]    = addon.ShowGearInspectPopup,
-                 ["onleave"]    = addon.HideGearCellPopup,
-                 ["userDraw"]   = addon.SetGearCellGP,
-                 ["onenterargs"]= { self,candidate,itemID },
-                 ["onleaveargs"]= { self,candidate,itemID },
-                 ["onclickargs"]= { self,candidate,itemID }
-                },
+          {["name"]       = 'guildrank',
+           ["value"]      = guildRankName,
+           ["color"]      = self.GetCandidateCellColor,
+           ["colorargs"]  = {self, candidate, itemID}},  
 
-				{["name"]       = 'currentitem',
-				 ["value"]      = '',
-                 ["userDraw"]   = addon.SetGearCellOwnerDraw,
-                 ["onenter"]    = addon.ShowGearCellPopup,
-                 ["onleave"]    = addon.HideGearCellPopup,
-                 ["onclick"]    = addon.OnGearCellClick,
-                 ["onenterargs"]= { self,candidate,itemID,'currentitem' },
-                 ["onleaveargs"]= { self,candidate,itemID,'currentitem' },
-                 ["onclickargs"]= { self,candidate,itemID,'currentitem' }
-                },
+          {["name"]       = 'response',
+           ["value"]      = initResponse,
+           ["args"]       = {self, candidate, itemID},
+           ["userDraw"]   = addon.SetCandidateResponseCellUserDraw,
+           ["color"]      = self.GetCandidateCellColor,
+           ["colorargs"]  = {self, candidate, itemID}},
+                 
+          {["name"]       = 'roll',
+           ["value"]      = randomRoll,
+           ["userDraw"]   = addon.SetCandidateRollCellUserDraw,                 
+           ["onenter"]    = addon.ShowRollCellPopup,
+           ["onleave"]    = addon.HideGearCellPopup,
+           ["onenterargs"]= { self,candidate,itemID },
+           ["onleaveargs"]= { self,candidate,itemID },
+           ["args"]       = {self, candidate, itemID}},
+
+          {["name"]       = 'note',
+           ["value"]      = '',
+           ["userDraw"]   = addon.SetNoteCellOwnerDraw,
+           ["onenter"]    = addon.ShowNoteCellPopup,
+           ["onleave"]    = addon.HideInfoPopup,
+           ["onenterargs"]= { self,candidate,itemID,'currentitem' },
+           ["onleaveargs"]= { self,candidate,itemID,'currentitem' }},
+                 
+          {["value"]      = ' '}, -- spacer
+
+          {["name"]       = 'currentilevel',
+           ["value"]      = '',
+           ["args"]       = {self, candidate, itemID},
+           ["onclick"]    = addon.OnGearInspectClick,
+           ["onenter"]    = addon.ShowGearInspectPopup,
+           ["onleave"]    = addon.HideGearCellPopup,
+           ["userDraw"]   = addon.SetGearCelliLVL,
+           ["onenterargs"]= { self,candidate,itemID },
+           ["onleaveargs"]= { self,candidate,itemID },
+           ["onclickargs"]= { self,candidate,itemID }
+          },
+
+          {["name"]       = 'currentitem',
+           ["value"]      = '',
+           ["userDraw"]   = addon.SetGearCellOwnerDraw,
+           ["onenter"]    = addon.ShowGearCellPopup,
+           ["onleave"]    = addon.HideGearCellPopup,
+           ["onclick"]    = addon.OnGearCellClick,
+           ["onenterargs"]= { self,candidate,itemID,'currentitem' },
+           ["onleaveargs"]= { self,candidate,itemID,'currentitem' },
+           ["onclickargs"]= { self,candidate,itemID,'currentitem' }
+          },
                 
-                {["name"]       = 'currentitem2',
-				 ["value"]      = '',
-                 ["userDraw"]   = addon.SetGearCellOwnerDraw,
-                 ["onenter"]    = addon.ShowGearCellPopup,
-                 ["onleave"]    = addon.HideGearCellPopup,
-                 ["onclick"]    = addon.OnGearCellClick,
-                 ["onenterargs"]= { self,candidate,itemID,'currentitem2' },
-                 ["onleaveargs"]= { self,candidate,itemID,'currentitem2' },
-                 ["onclickargs"]= { self,candidate,itemID,'currentitem2' }
-                },
+          {["name"]       = 'currentitem2',
+           ["value"]      = '',
+           ["userDraw"]   = addon.SetGearCellOwnerDraw,
+           ["onenter"]    = addon.ShowGearCellPopup,
+           ["onleave"]    = addon.HideGearCellPopup,
+           ["onclick"]    = addon.OnGearCellClick,
+           ["onenterargs"]= { self,candidate,itemID,'currentitem2' },
+           ["onleaveargs"]= { self,candidate,itemID,'currentitem2' },
+           ["onclickargs"]= { self,candidate,itemID,'currentitem2' }
+          },
                 
-                {["value"]      = ' '},     -- spacer
-			}
-		 })
-	
-	self.lootTable[itemID]['candidates'][candidate] = #(self.lootTable[itemID]['rowdata']);
+          {["value"]      = ' '}, -- spacer
+      }
+     })
+
+     self.lootTable[itemID]['candidates'][candidate] = #(self.lootTable[itemID]['rowdata']);
     
     -- Are we lootmaster for this loot? Lets send out a monitor message about the added candidate
     if self.lootTable[itemID].mayDistribute and self.lootTable[itemID].candidatesSent and self:MonitorMessageRequired(itemID) then
@@ -1375,15 +1341,8 @@ function LootMasterML:GiveLootToCandidate( link, candidate, lootType )
 		return self:Print( format("Could not send %s to %s, candidate not found (offline, left group?)", tostring(loot.link), tostring(candidate) ) )
 	end
     
-    -- [[ lootType == self.LOOTTYPE.BANK, self.LOOTTYPE.DISENCHANT, self.LOOTTYPE.GP ]]--
-    -- [[ gp = amount of gp awarded to this item ]] --
-    
-    if lootType ~= LootMaster.LOOTTYPE.GP then
-        gp = 0;
-    end
-    
+    -- [[ lootType == self.LOOTTYPE.BANK, self.LOOTTYPE.DISENCHANT, self.LOOTTYPE.GIVE ]]--    
     self:SetCandidateData( loot.id, candidate, 'lootType', lootType or 0 );
-    self:SetCandidateData( loot.id, candidate, 'lootGP', tonumber(gp) or 0 );
 
 	GiveMasterLoot( slotID, candidateID )
 	

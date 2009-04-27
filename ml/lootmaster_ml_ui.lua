@@ -12,24 +12,20 @@ local gearBgColor   = {["r"] = 0.15, ["g"] = 0.15, ["b"] = 0.15, ["a"] = 1.0 }
 local epgpColor     = {["r"] = 0.45, ["g"] = 0.45, ["b"] = 0.45, ["a"] = 1.0 }
 
 local sstScrollCols = {
-       { ["name"] = "C.",	        	["width"] = 20, ["align"] = "CENTER" },	 
-	   { ["name"] = "Candidate",		["width"] = 100, ["align"] = "LEFT" },	   
-       { ["name"] = "Rank",     		["width"] = 100, ["align"] = "LEFT" },
-	   { ["name"] = "Response",		    ["width"] = 210, ["align"] = "LEFT", 	["defaultsort"] = "desc", ["sort"] = "desc", ["color"] = {["r"] = 0.25, ["g"] = 1.00, ["b"] = 0.25, ["a"] = 1.0 }, ["sortnext"]=10 }, --, 
-       { ["name"] = "EP",		        ["width"] = 50,  ["align"] = "RIGHT",   ["color"] = epgpColor},
-       { ["name"] = "GP",		        ["width"] = 50,  ["align"] = "RIGHT",   ["color"] = epgpColor},
-       { ["name"] = "PR",		        ["width"] = 50,  ["align"] = "RIGHT",   ["defaultsort"] = "asc", ["sort"] = "asc", ["sortfirst"]=10, ["sortnext"]=8, ["ident"]="PR"},
-       { ["name"] = "Roll",		        ["width"] = 35,  ["align"] = "RIGHT",   ["defaultsort"] = "asc", ["sort"] = "asc", ["color"] = epgpColor},
-       
-       { ["name"] = "Note",		        ["width"] = 30,  ["align"] = "RIGHT"},
-       
-       { ["name"] = " ",		        ["width"] = 5,   ["align"] = "LEFT",    ["defaultsort"] = "asc", ["sort"] = "asc", ["sortnext"]=7},   -- Spacer, actually contains a check if someone matches MinEP, used for sorting purposes.
-       
-       { ["name"] = "iLvl",		        ["width"] = 60,  ["align"] = "CENTER",  ["bgcolor"] = gearBgColor },
-       { ["name"] = "GP",		        ["width"] = 60,  ["align"] = "CENTER",  ["bgcolor"] = gearBgColor },
-       { ["name"] = "s1",		        ["width"] = 20,  ["align"] = "CENTER",  ["bgcolor"] = gearBgColor },
-       { ["name"] = "s2",		        ["width"] = 20,  ["align"] = "CENTER",  ["bgcolor"] = gearBgColor },
-       { ["name"] = " ",		        ["width"] = 5,   ["align"] = "LEFT",    ["bgcolor"] = gearBgColor }
+       { ["name"] = " ",         ["width"] = 20, ["align"] = "CENTER" },   
+       { ["name"] = "Candidate", ["width"] = 100, ["align"] = "LEFT" },    
+       { ["name"] = "Rank",      ["width"] = 100, ["align"] = "LEFT" },
+       { ["name"] = "Response",  ["width"] = 210, ["align"] = "LEFT",    ["defaultsort"] = "desc", ["sort"] = "desc", ["color"] = {["r"] = 0.25, ["g"] = 1.00, ["b"] = 0.25, ["a"] = 1.0 }, ["sortnext"]=10 }, --, 
+       { ["name"] = "Roll",      ["width"] = 35,  ["align"] = "RIGHT",   ["defaultsort"] = "asc", ["sort"] = "asc", ["color"] = epgpColor},
+
+       { ["name"] = "Note",      ["width"] = 30,  ["align"] = "RIGHT"},
+
+       { ["name"] = " ",         ["width"] = 5,   ["align"] = "LEFT" }, -- spacer
+
+       { ["name"] = "iLvl",      ["width"] = 60,  ["align"] = "CENTER",   ["bgcolor"] = gearBgColor },
+       { ["name"] = "s1",        ["width"] = 20,  ["align"] = "CENTER",   ["bgcolor"] = gearBgColor },
+       { ["name"] = "s2",        ["width"] = 20,  ["align"] = "CENTER",   ["bgcolor"] = gearBgColor },
+       { ["name"] = " ",         ["width"] = 5,   ["align"] = "LEFT",     ["bgcolor"] = gearBgColor }
 }
 
 function LootMasterML:ShowInfoPopup( ... )    
@@ -65,7 +61,7 @@ function LootMasterML:GetFrame()
     mainframe:Hide();
     mainframe:SetScale(LootMaster.db.profile.mainUIScale or 1)
     mainframe:SetMovable(true)
-	mainframe:SetFrameStrata("DIALOG")
+    mainframe:SetFrameStrata("DIALOG")
     self.mainframe = mainframe;
     
       
@@ -74,44 +70,44 @@ function LootMasterML:GetFrame()
     frame:Show();
     frame:SetPoint("TOPLEFT",mainframe,"TOPLEFT",0,0)
     frame:SetPoint("BOTTOMRIGHT",mainframe,"BOTTOMRIGHT",0,0)
-	frame:SetWidth(700)
-	frame:SetHeight(415)
-	--frame:SetPoint("CENTER",UIParent,"CENTER",0,0)
-	frame:EnableMouse()
+    frame:SetWidth(700)
+    frame:SetHeight(415)
+    --frame:SetPoint("CENTER",UIParent,"CENTER",0,0)
+    frame:EnableMouse()
     frame:SetMovable(true)
-	--frame:SetResizable()    
-	
+    --frame:SetResizable()    
     --frame:SetToplevel(true)
     frame:SetBackdrop({
-		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Background",
-		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-		tile = true, tileSize = 64, edgeSize = 16,
-		insets = { left = 4, right = 4, top = 4, bottom = 4 }
-	})
+    bgFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Background",
+    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+    tile = true, tileSize = 64, edgeSize = 16,
+    insets = { left = 4, right = 4, top = 4, bottom = 4 }
+  })
     frame:SetBackdropColor(1,0,0,1)
     
     local extralootframe = CreateFrame("Frame","LootMasterMLFrameExtraLoot",frame)
     extralootframe:SetBackdrop({
-		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Background",
-		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-		tile = true, tileSize = 64, edgeSize = 8,
-		insets = { left = 2, right = 1, top = 2, bottom = 2 }
-	})
+    bgFile = "Interface\\DialogFrame\\UI-DialogBox-Gold-Background",
+    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+    tile = true, tileSize = 64, edgeSize = 8,
+    insets = { left = 2, right = 1, top = 2, bottom = 2 }
+  })
+
     extralootframe:SetBackdropBorderColor(1,1,1,0.5)
     extralootframe:SetBackdropColor(1,0,0,1)
     extralootframe:Show();
     extralootframe:SetFrameStrata("HIGH")
     extralootframe:SetPoint("TOPRIGHT",frame,"TOPLEFT",4,-10)
-	extralootframe:SetWidth(LOOTBUTTON_HEIGHT + 17 )
-	--extralootframe:SetPoint("BOTTOM",frame,"BOTTOM",0,10)
+    extralootframe:SetWidth(LOOTBUTTON_HEIGHT + 17 )
+    --extralootframe:SetPoint("BOTTOM",frame,"BOTTOM",0,10)
     frame.extralootframe = extralootframe;
-	--frame:SetResizable()    
-    
+    --frame:SetResizable()    
+
     --frame:SetScript("OnMouseDown", function() mainframe:StartMoving() end)
-	--frame:SetScript("OnMouseUp", function() mainframe:StopMovingOrSizing() end)
-	--frame:SetScript("OnHide",frameOnClose)
+    --frame:SetScript("OnMouseUp", function() mainframe:StopMovingOrSizing() end)
+    --frame:SetScript("OnHide",frameOnClose)
     --#endregion
-    
+
     local titleFrame = CreateFrame("Frame", nil, mainframe)
     --#region Setup main frame title
     titleFrame:SetBackdrop({
@@ -210,78 +206,35 @@ function LootMasterML:GetFrame()
 		insets = { left = 2, right = 1, top = 2, bottom = 2 }
 	})  
     equipHeaderFrame:SetBackdropColor(0.2,0.2,0.2,0.6)
-    equipHeaderFrame:SetWidth(170)
+    equipHeaderFrame:SetWidth(110)
     equipHeaderFrame:SetHeight(38)
     
     local titletext = equipHeaderFrame:CreateFontString(nil,"OVERLAY","GameFontNormalSmall")
     titletext:SetVertexColor( 0.9, 0.9, 0.9 );
-	titletext:SetPoint("CENTER",equipHeaderFrame,"CENTER",0,0)
+    titletext:SetPoint("CENTER",equipHeaderFrame,"CENTER",0,0)
     titletext:SetPoint("TOP",equipHeaderFrame,"TOP",0,-5)
-	titletext:SetText( string.format("Candidate's current equipment:", self:GetVersionString() ) )    
+    titletext:SetText( "Equipped" )    
     --#endregion
     
-	local sstScroll = ScrollingTable:CreateST(sstScrollCols, 15, 20, nil, frame);
+    local sstScroll = ScrollingTable:CreateST(sstScrollCols, 15, 20, nil, frame);
     --#region Setup the scrollingTable
-	sstScroll.frame:SetPoint("TOPLEFT",frame,"TOPLEFT",10,-95)	
-	--sstScroll.frame:SetPoint("RIGHT",frame,"RIGHT",-30,10)
+    sstScroll.frame:SetPoint("TOPLEFT",frame,"TOPLEFT",10,-95)	
+    --sstScroll.frame:SetPoint("RIGHT",frame,"RIGHT",-30,10)
     
     equipHeaderFrame:SetPoint("BOTTOMRIGHT",sstScroll.frame,"TOPRIGHT",-4,-5)
 
-	frame:SetMinResize(frame:GetWidth(),130)
-	frame:SetMaxResize(frame:GetWidth(), 60*15+85 )
+    frame:SetMinResize(frame:GetWidth(),130)
+    frame:SetMaxResize(frame:GetWidth(), 60*15+85 )
     
     frame.sstScroll = sstScroll
     --#endregion
-    
-    local lblGPOverride = frame:CreateFontString(nil,"OVERLAY","GameFontNormal")
-    --lblGPOverride:SetVertexColor( 0.9, 0.9, 0.9 );
-	lblGPOverride:SetPoint("TOPLEFT",lblItem,"BOTTOMLEFT",0,-15)
-	lblGPOverride:SetText( "GP value:" );
-    frame.lblGPOverride = lblGPOverride
-    
+
     local lblNoDistribute = frame:CreateFontString(nil,"OVERLAY","GameFontNormal")
     lblNoDistribute:SetVertexColor( 1, 0, 0 );
-	lblNoDistribute:SetPoint("TOPLEFT",lblItem,"BOTTOMLEFT",0,-15)
-	lblNoDistribute:SetText( "** MONITOR ONLY **" );
+    lblNoDistribute:SetPoint("TOPLEFT",lblItem,"BOTTOMLEFT",0,-15)
+    lblNoDistribute:SetText( "** MONITOR ONLY **" );
     frame.lblNoDistribute = lblNoDistribute
-    
-    local tbGPValueFrame = CreateFrame("Frame", nil, frame)    
-	tbGPValueFrame:SetHeight(20)  
-    tbGPValueFrame:SetWidth(50);
-    tbGPValueFrame:SetBackdrop({
-		bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-		tile = true, tileSize = 64, edgeSize = 8,
-		insets = { left = 2, right = 1, top = 2, bottom = 2 }
-	})
-    tbGPValueFrame:SetBackdropColor(0.2, 0.2, 0.2, 1)
-    tbGPValueFrame:SetBackdropBorderColor(1, 1, 1, 1)
-    tbGPValueFrame:SetPoint("BOTTOMLEFT",lblGPOverride,"BOTTOMRIGHT",10,-5)
-    
-    local tbGPValue = CreateFrame("EditBox", nil, tbGPValueFrame)
-    local iGPManual = 0
-    tbGPValue:SetHistoryLines(1)
-    tbGPValue:SetMaxLetters(5);
-    tbGPValue:SetAutoFocus(false)
-    tbGPValue:SetPoint("TOPLEFT",tbGPValueFrame,"TOPLEFT", 6, -1);
-    tbGPValue:SetPoint("BOTTOMRIGHT",tbGPValueFrame,"BOTTOMRIGHT", -6, 1);
-    tbGPValue:SetFontObject('GameFontHighlightSmall')
-    tbGPValue:SetScript("OnEscapePressed", function() tbGPValue:ClearFocus() end)
-    tbGPValue:SetScript("OnEnterPressed", function() tbGPValue:ClearFocus() end)
-    tbGPValue:SetScript("OnEnter", function() self:ShowInfoPopup("GP Value", "Change this to the GP value you wish to set for this item") end)
-    tbGPValue:SetScript("OnLeave", self.HideInfoPopup)
-        
-    tbGPValue:SetScript("OnEditFocusGained", function() tbGPValue:HighlightText(); CloseDropDownMenus(); end)
-    tbGPValue:SetScript("OnEditFocusLost", function()
-        tbGPValue:HighlightText(0,0)
-        iGPManual = tonumber(tbGPValue:GetText()) or frame.currentLoot.gpvalue or 0;
-        tbGPValue:SetText(iGPManual);
-        frame.currentLoot.gpvalue_manual = iGPManual;        
-    end)        
-    tbGPValue:SetScript("OnTextChanged", function() CloseDropDownMenus(); end)    
-    frame.tbGPValue = tbGPValue;
-    frame.tbGPValueFrame = tbGPValueFrame;
-    
+
     local btnAnnounce = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
 	btnAnnounce:SetScript("OnClick", function()
             if not frame.currentLoot then return message('no loot selected') end
@@ -292,7 +245,7 @@ function LootMasterML:GetFrame()
                                                                     "Click to announce this item to all candidates",
                                                                     "This will open the selecton screen on their client.") end)
     btnAnnounce:SetScript("OnLeave", self.HideInfoPopup)
-	btnAnnounce:SetPoint("LEFT",tbGPValueFrame,"RIGHT",10,0)
+	btnAnnounce:SetPoint("TOPLEFT",lblItem,"BOTTOMLEFT",0,-15)
 	btnAnnounce:SetHeight(25)
 	btnAnnounce:SetWidth(120)
 	btnAnnounce:SetText("Announce loot")
@@ -450,7 +403,7 @@ function LootMasterML:CreateLootButton()
     
     numTotalLootButtons = numTotalLootButtons+1
     
-    local icon = CreateFrame("Button", "EPGPMLLootButton"..numTotalLootButtons, self.frame, "AutoCastShineTemplate")
+    local icon = CreateFrame("Button", "CCMLLootButton"..numTotalLootButtons, self.frame, "AutoCastShineTemplate")
     --#region itemicon setup
     icon:EnableMouse()
     icon:SetNormalTexture("Interface/ICONS/INV_Misc_QuestionMark")
@@ -517,15 +470,8 @@ function LootMasterML:DisplayLoot( item )
         binding = ', BoE'
     end
     
-    local gp2 = '';
-    if data.gpvalue2 and data.gpvalue2~='' then
-        gp2 = format(' or %s', data.gpvalue2)
-    end
-    
-    self.frame.lblInfo:SetText(format("ilevel: %s, GP: %s%s%s", data.ilevel or -1, data.gpvalue or -1, gp2, binding or ''));        
+    self.frame.lblInfo:SetText(format("iLevel: %s%s", data.ilevel or -1, binding or ''));        
     self.frame.itemIcon:SetNormalTexture(data.texture); 
-    
-    self.frame.tbGPValue:SetText( data.gpvalue_manual )
     
     if not data.announced then
         self.frame.btnAnnounce:Show();
@@ -534,12 +480,8 @@ function LootMasterML:DisplayLoot( item )
     end
     
     if data.mayDistribute then
-        self.frame.tbGPValueFrame:Show();
-        self.frame.lblGPOverride:Show();
         self.frame.lblNoDistribute:Hide();
     else
-        self.frame.tbGPValueFrame:Hide();
-        self.frame.lblGPOverride:Hide();
         self.frame.lblNoDistribute:Show();
         self.frame.lblNoDistribute:SetText( format("** MONITORING ** Only %s may distribute this item **", tostring(data.lootmaster)) )
     end
@@ -688,11 +630,7 @@ function LootMasterML:CandidateDropDownInitialize( frame, level, menuList )
         LootMasterML:Print(LootMasterML, 'could not display lootdropdown; loot not in table');
         return frame:Hide();
     end
-    
-    if self.frame then
-        self.frame.tbGPValue:ClearFocus(); 
-    end
-    
+
     local info = UIDropDownMenu_CreateInfo();
     
     if UIDROPDOWNMENU_MENU_LEVEL == 1 then
@@ -857,19 +795,6 @@ function LootMasterML:OnCandidateRowRightClick( candidate, link, row )
     ToggleDropDownMenu(1, nil, self.CandidateDropDown, "cursor", 0, 0);
 end
 
-function LootMasterML:SetCellEPGPNumberFormatted( cell, self, candidate, func )
-    local value = func(self, candidate)
-    if not value or value == -1 then return cell.text:SetText('?'); end;
-    value = tonumber(value) or 0;
-    if value>99999 then return cell.text:SetText(format("%d", ceil(value))) end
-    cell.text:SetText(format("%.5g", value));
-end
-
-function LootMasterML:EmptyCellOwnerDraw(cell)
-    if not cell then return end;
-    cell.text:SetText('')
-end
-
 function LootMasterML:SetNoteCellOwnerDraw(cell, itemData)
     
     cell.text:SetText('');
@@ -899,7 +824,7 @@ function LootMasterML:SetGearCellOwnerDraw(cell, itemData)
         return;
     end   
     
-    local link, gpvalue, ilevel, gpvalue2, itemTexture = strsplit("^", itemData)
+    local link, ilevel, itemTexture = strsplit("^", itemData)
     
     cell.text:SetText('');
     cell:SetNormalTexture(itemTexture)
@@ -977,14 +902,13 @@ function LootMasterML:SetGearCelliLVL( cell, self, candidate, item )
     
     local s = {};
     local itemData = self:GetCandidateData(item, candidate, "currentitem");
-    local _, _, ilevel, _, _ = strsplit("^", itemData or '');
+    local _, ilevel = strsplit("^", itemData or '');
     if ilevel then tinsert(s, ilevel) end
-    
-    
+
     itemData = self:GetCandidateData(item, candidate, "currentitem2");
-    _, _, ilevel, _, _ = strsplit("^", itemData or '');
+    _, ilevel = strsplit("^", itemData or '');
     if ilevel then tinsert(s, ilevel) end
-    
+
     cell.text:SetText( strjoin(', ', unpack(s)))   
 end
 
