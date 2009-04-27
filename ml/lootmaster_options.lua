@@ -18,19 +18,11 @@ function mod:OnEnable()
             
                 args = {
                 
-                help = {
-                    order = 0,
-                    type = "description",
-                    name = "EPGP is an in game, relational loot distribution system. LootMaster helps you distribute loot to your raid and registers this loot in the EPGP system.",
-                },
-                
-                
-                
                 no_ml = {
                     order = 2,
                     type = "description",
                     hidden = function(info) return LootMasterML end,
-                    name = "\r\n\r\n|cFFFF8080WARNING: Alot of settings have been hidden because the CCLootMaster 'ML' module has been disabled. Please enabled it from the addon configuration screen.|r",
+                    name = "\r\n\r\n|cFFFF8080WARNING: Alot of settings have been hidden because the CCLootMaster 'Master Looter' module has been disabled. It can be enabled from the addon configuration screen.|r",
                 },
                 
                 config_group = {
@@ -86,32 +78,7 @@ function mod:OnEnable()
                                 [300] = '5 min',
                             },
                         }, 
-                        
-                        defaultOffspecGP = {
-                            order = 15,
-                            type = "input",                    
-                            name = "Default offspec/greed GP",
-                            desc = "Fill this field to override the GP value for offspec/greed loot.",
-                            width = 'double',
-                            validate = function(data, value) if value=='' then return true end; if not strmatch(value, '^%s*%d+%s-%%?%s*$') then return false else return true end end,
-                            set = function(i, v) 
-                                
-                                if v == '' or not v then
-                                    v = ''
-                                    LootMaster.db.profile.defaultOffspecGPPercentage = false;
-                                    LootMaster.db.profile.defaultOffspecGPValue = nil;
-                                else
-                                    value, perc = strmatch(v, '^%s*(%d+)%s-(%%?)%s*$')
-                                    LootMaster.db.profile.defaultOffspecGPPercentage = (perc~=nil and perc~='');
-                                    LootMaster.db.profile.defaultOffspecGPValue = tonumber(value);
-                                end                               
-                                LootMaster.db.profile.defaultOffspecGP = v;
-                            end,
-                            usage = "\r\nEmpty: use normal GP value"..
-                                    "\r\n50%: use 50% of normal GP value"..
-                                    "\r\n25: all greed items are worth 25 GP"
-                        },
-                        
+
                         ignoreResponseCorrections = {
                             type = "toggle",
                             order = 17,
@@ -197,7 +164,7 @@ function mod:OnEnable()
                         help = {
                             order = 0,
                             type = "description",
-                            name = "The EPGP Lootmaster auto announcer allows you to auto announce specific loot to the raid.",
+                            name = "The CCLootMaster auto announcer allows you to auto announce specific loot to the raid.",
                         },
                                 
                         auto_announce_threshold = {
@@ -232,7 +199,7 @@ function mod:OnEnable()
                                 help = {
                                     order = 0,
                                     type = "description",
-                                    name = "The EPGP Lootmaster auto looter allows you to send specific BoU and BoE items to a predefined candidate without asking questions.",
+                                    name = "The CCLootMaster auto looter allows you to send specific BoU and BoE items to a predefined candidate without asking questions.",
                                 },
                                 
                                 AutoLootThreshold = {
