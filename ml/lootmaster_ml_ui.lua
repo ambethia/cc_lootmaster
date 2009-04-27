@@ -1,7 +1,7 @@
 ﻿--[[
 ]]
 
-local LootMaster    = LibStub("AceAddon-3.0"):GetAddon("EPGPLootMaster")
+local LootMaster    = LibStub("AceAddon-3.0"):GetAddon("CCLootMaster")
 
 local LOOTBUTTON_MAXNUM = 10
 local LOOTBUTTON_HEIGHT = 32
@@ -132,7 +132,7 @@ function LootMasterML:GetFrame()
     titleFrame:SetScript("OnMouseWheel", function(s, delta) 
 		self:SetUIScale( max(min(mainframe:GetScale(0.8) + delta/15,2.0),0.5) );
 	end)
-    titleFrame:SetScript("OnEnter", function() self:ShowInfoPopup("EPGPLootmaster", "Click and drag to move this window.", "Doubleclick to fold/unfold this window.") end)
+    titleFrame:SetScript("OnEnter", function() self:ShowInfoPopup("CCLootMaster", "Click and drag to move this window.", "Doubleclick to fold/unfold this window.") end)
     titleFrame:SetScript("OnLeave", self.HideInfoPopup)
 	titleFrame:SetScript("OnMouseUp", function()
         mainframe:StopMovingOrSizing()

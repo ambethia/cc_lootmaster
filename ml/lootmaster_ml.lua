@@ -5,11 +5,11 @@
 local debug	= false
 
 LootMasterML	    = LibStub("AceAddon-3.0"):NewAddon("LootMasterML", "AceConsole-3.0", "AceComm-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0")
-local LootMaster    = LibStub("AceAddon-3.0"):GetAddon("EPGPLootMaster")
+local LootMaster    = LibStub("AceAddon-3.0"):GetAddon("CCLootMaster")
 
 local addon         = LootMasterML		-- Local instance of the addon
 
-local MsgPrefix     = 'EPGPLootmaster: '
+local MsgPrefix     = 'CCLootMaster: '
 
 -- Cache some math function for faster access and preventing
 -- other addons from screwing em up.
@@ -19,8 +19,8 @@ local mathFloor             = math.floor
 local mathCachedRandomSeed  = math.random()*1000
 
 
-StaticPopupDialogs["EPGPLOOTMASTER_ASK_TRACKING"] = {
-	text = '- - - - EPGPLootmaster - - - -\r\n\r\nYou are the loot master, would you like to use EPGPLootmaster to distribute loot?\r\n\r\n(You will be asked again next time. Use /lm config to change this behaviour)',
+StaticPopupDialogs["CCLOOTMASTER_ASK_TRACKING"] = {
+	text = '- - - - CCLootMaster - - - -\r\n\r\nYou are the loot master, would you like to use CCLootMaster to distribute loot?\r\n\r\n(You will be asked again next time. Use /lm config to change this behaviour)',
 	button1 = YES,
 	button2 = NO,
 	OnAccept = function()
@@ -71,12 +71,12 @@ function LootMasterML:OnInitialize()
     self:RegisterEvent("GUILD_ROSTER_UPDATE",       "CacheGuildInfo")   
 
 	-- Register communications
-	self:RegisterComm("EPGPLootMasterML", 		    "CommandReceived")
+	self:RegisterComm("CCLootMasterML", 		    "CommandReceived")
         
     -- Create table for the guildinfo cache.
     self.guildInfo = {}
     
-    -- Disable 'automatic loot tracking' popup in EPGP - Let EPGPLootmaster handle all the GP stuff.
+    -- Disable 'automatic loot tracking' popup in EPGP - Let CCLootMaster handle all the GP stuff.
     if EPGP and CheckForGuildInfo and IsInGuild() then
         CheckForGuildInfo(EPGP);        
         if EPGP.db then
@@ -220,7 +220,7 @@ function LootMasterML:ChatFrame_MessageEventHandler(this, event, ...)
             end
         end
         
-        if not LootMaster.db.profile.filterEPGPLootmasterMessages then
+        if not LootMaster.db.profile.filterCCLootMasterMessages then
             handleMessage = true;
         end
         
@@ -237,7 +237,7 @@ function LootMasterML:ChatFrame_MessageEventHandler(this, event, ...)
 end
     
 function LootMasterML:GetVersionString()
-    local lm = LibStub("AceAddon-3.0"):GetAddon("EPGPLootMaster")
+    local lm = LibStub("AceAddon-3.0"):GetAddon("CCLootMaster")
     return (lm.GetVersionString(lm) or 'unknown version')
 end
 
@@ -251,15 +251,15 @@ function LootMasterML:SendCommand(command, message, target)
 		return self:Print("Could not send command, no target specified")
 	end;
     if target=='RAID' then
-        self:SendCommMessage("EPGPLootMasterC", format("%s:%s", tostring(command), tostring(message)), "RAID", nil, "ALERT")
+        self:SendCommMessage("CCLootMasterC", format("%s:%s", tostring(command), tostring(message)), "RAID", nil, "ALERT")
     elseif target=='PARTY' then
-        self:SendCommMessage("EPGPLootMasterC", format("%s:%s", tostring(command), tostring(message)), "PARTY", nil, "ALERT")
+        self:SendCommMessage("CCLootMasterC", format("%s:%s", tostring(command), tostring(message)), "PARTY", nil, "ALERT")
     else
         -- Don't use AceComm for messages to self, call function directly
         if target==UnitName('player') then
-            LootMaster.CommandReceived(LootMaster, "EPGPLootMasterC", format("%s:%s", tostring(command), tostring(message)), 'WHISPER', target)
+            LootMaster.CommandReceived(LootMaster, "CCLootMasterC", format("%s:%s", tostring(command), tostring(message)), 'WHISPER', target)
         else
-            self:SendCommMessage("EPGPLootMasterC", format("%s:%s", tostring(command), tostring(message)), "WHISPER", target, "ALERT")
+            self:SendCommMessage("CCLootMasterC", format("%s:%s", tostring(command), tostring(message)), "WHISPER", target, "ALERT")
         end
     end
 end
@@ -327,17 +327,17 @@ function LootMasterML:SendMonitorMessage(...)
     local num = GetNumRaidMembers()
     if num>0 then
         -- we're in raid
-        self:SendCommMessage("EPGPLootMasterML", format("MONITOR:%s", out), "RAID", nil, prio)
+        self:SendCommMessage("CCLootMasterML", format("MONITOR:%s", out), "RAID", nil, prio)
         self:Debug( 'SendMonitorMessage(RAID): ' .. out, true );
     else
         num = GetNumPartyMembers()
         if num>0 then
             --we're in party
-            self:SendCommMessage("EPGPLootMasterML", format("MONITOR:%s", out), "PARTY", nil, prio)
+            self:SendCommMessage("CCLootMasterML", format("MONITOR:%s", out), "PARTY", nil, prio)
             self:Debug( 'SendMonitorMessage(PARTY): ' .. out, true );
         else
             --we're not grouped, send message to self for debugging purposes.
-            self:SendCommMessage("EPGPLootMasterML", format("MONITOR:%s", out), "WHISPER", UnitName('player'), nil, prio)
+            self:SendCommMessage("CCLootMasterML", format("MONITOR:%s", out), "WHISPER", UnitName('player'), nil, prio)
             self:Debug( 'SendMonitorMessage(WHISPER->SELF): ' .. out, true );
         end
     end
@@ -656,7 +656,7 @@ function LootMasterML:AskCandidateIfNeeded( link, candidate )
 
 	if candidate == 'RAID' or candidate == 'PARTY' then
         
-        SendChatMessage( format('%splease whisper me !epgp need/greed/pass %s  (or use the popup if you have EPGPLootmaster installed)', MsgPrefix or '', loot.link or ''), candidate );
+        SendChatMessage( format('%splease whisper me !epgp need/greed/pass %s  (or use the popup if you have CCLootMaster installed)', MsgPrefix or '', loot.link or ''), candidate );
         
         -- Sending to raid channel? Update all candidate statuses.
         for c, index in pairs(loot.candidates) do
@@ -667,7 +667,7 @@ function LootMasterML:AskCandidateIfNeeded( link, candidate )
         
     elseif candidate ~= UnitName('player') then
         
-        SendChatMessage( format('%splease whisper me !epgp need/greed/pass %s  (or use the popup if you have EPGPLootmaster installed)', MsgPrefix or '', loot.link or ''), 'WHISPER', nil, candidate );
+        SendChatMessage( format('%splease whisper me !epgp need/greed/pass %s  (or use the popup if you have CCLootMaster installed)', MsgPrefix or '', loot.link or ''), 'WHISPER', nil, candidate );
         self:SetCandidateResponse( loot.id, candidate, LootMaster.RESPONSE.INIT );
         
     end
@@ -1402,16 +1402,16 @@ function LootMasterML:OnMasterLooterChange(masterlooter)
     if masterlooter~=UnitName('player') then return end;
     
     -- Show a message here, based on the current settings
-    if LootMaster.db.profile.use_epgplootmaster == 'enabled' then
+    if LootMaster.db.profile.use_cc_lootmaster == 'enabled' then
         -- Always enable without asking
         LootMaster:Print('you are the loot master, loot tracking enabled');
         self:EnableTracking();
-    elseif LootMaster.db.profile.use_epgplootmaster == 'disabled' then
+    elseif LootMaster.db.profile.use_cc_lootmaster == 'disabled' then
         -- Disabled from the config panel
         LootMaster:Print('you are the loot master, tracking disabled manually (configuration: /lm config)');
         self:DisableTracking();
     else
-        StaticPopup_Show("EPGPLOOTMASTER_ASK_TRACKING")
+        StaticPopup_Show("CCLOOTMASTER_ASK_TRACKING")
     end    
 end
 

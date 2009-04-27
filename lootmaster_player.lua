@@ -19,17 +19,17 @@ function LootMaster:SendCommand(command, message, target)
         
     if UnitInRaid(target) then
         -- we're in raid with master looter
-        self:SendCommMessage("EPGPLootMasterML", formatted, "RAID", nil, "ALERT")
+        self:SendCommMessage("CCLootMasterML", formatted, "RAID", nil, "ALERT")
         self:Debug('SendCommand(RAID): '..formatted, true)
         broadcasted = true;
     elseif UnitInParty(target) and GetNumPartyMembers()>0 then
         --we're in party with master looter
-        self:SendCommMessage("EPGPLootMasterML", formatted, "PARTY", nil, "ALERT")
+        self:SendCommMessage("CCLootMasterML", formatted, "PARTY", nil, "ALERT")
         self:Debug('SendCommand(PARTY): '..formatted, true)
         broadcasted = true;
     else
         --we're not grouped, send message to target by whispering
-        self:SendCommMessage("EPGPLootMasterML", formatted, "WHISPER", target, "ALERT") 
+        self:SendCommMessage("CCLootMasterML", formatted, "WHISPER", target, "ALERT") 
         self:Debug('SendCommand(WHISPER->'..target..'): '..formatted, true)
     end
     

@@ -7,7 +7,7 @@
 			Pass on loot == (GetOptOutOfLoot() == true)
 ]]
 
-LootMaster          = LibStub("AceAddon-3.0"):NewAddon("EPGPLootMaster", "AceConsole-3.0", "AceComm-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0")
+LootMaster          = LibStub("AceAddon-3.0"):NewAddon("CCLootMaster", "AceConsole-3.0", "AceComm-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0")
 
 local version 	    = "@project-version@"
 local dVersion 	    = "@project-date-iso@"
@@ -56,7 +56,7 @@ function LootMaster:OnInitialize()
     self.dVersion 	= dVersion;
     self.iVersion 	= iVersion;
     
-    self.db = LibStub("AceDB-3.0"):New("EPGPLootMaster")
+    self.db = LibStub("AceDB-3.0"):New("CCLootMaster")
     
     self.db:RegisterDefaults(
     {
@@ -65,7 +65,7 @@ function LootMaster:OnInitialize()
         AutoLootThreshold = 2,
         hideOnSelection = true,
         loot_timeout = 60,
-        filterEPGPLootmasterMessages = true,
+        filterCCLootMasterMessages = true,
         monitor = false,
         monitorSend = true,
         monitorThreshold = 2,
@@ -75,7 +75,7 @@ function LootMaster:OnInitialize()
         allowCandidateNotes = true,
         monitorIncomingThreshold = 3,
         audioWarningOnSelection = true,
-        use_epgplootmaster = 'ask'
+        use_cc_lootmaster = 'ask'
       }
     })
     
@@ -114,7 +114,7 @@ function LootMaster:OnInitialize()
     LootMaster.LOOTTYPE = self.LOOTTYPE;
     
 	-- Register communications
-	self:RegisterComm("EPGPLootMasterC",    "CommandReceived")
+	self:RegisterComm("CCLootMasterC",    "CommandReceived")
     
     -- Register communications for version checking
 	self:RegisterComm("EPGPLMVChk", 	    "CommVersionCheckRequest")
@@ -151,11 +151,11 @@ local lastMsgID = nil;
 local lastMsgHandled = true;
 
 --[[
-    Filter out 'EPGPLootmaster:' announces in the raid and raid leader and party chat
+    Filter out 'CCLootMaster:' announces in the raid and raid leader and party chat
 ]]--
 function LootMaster:ChatFrame_MessageEventHandler(this, event, message, ...)
  
-    if LootMaster.db.profile.filterEPGPLootmasterMessages and HandleChatEvents[event] then
+    if LootMaster.db.profile.filterCCLootMasterMessages and HandleChatEvents[event] then
         
         -- Lets speed this up by checking if we already tested the message
         local msgID = select(select("#", ...), ...)
@@ -167,8 +167,8 @@ function LootMaster:ChatFrame_MessageEventHandler(this, event, message, ...)
             lastMsgID       = msgID;
             lastMsgHandled  = true;
             
-            -- find EPGPLootmaster: in the chat message and prevent these messages from showing up.
-            if strfind(message, '^%s*EPGPLootmaster:%s+') then  
+            -- find CCLootMaster: in the chat message and prevent these messages from showing up.
+            if strfind(message, '^%s*CCLootMaster:%s+') then  
                 lastMsgHandled  = false;
                 return false;
             end       
@@ -228,7 +228,7 @@ function LootMaster:SlashHandler( input )
         
     elseif command=='config' or command=='c' or command=='options' or command=='o' then
         
-        InterfaceOptionsFrame_OpenToCategory("EPGPLootMaster")
+        InterfaceOptionsFrame_OpenToCategory("CCLootMaster")
         
     elseif command=='close' or command=='hide' then
         
@@ -825,7 +825,7 @@ function LootMaster:OutputLog()
     local output = self:RecurseLogOutput(debuglog);
     
     StaticPopupDialogs["EPGP_LOGOUTPUT_POPUP"] = {
-        text = 'EPGPLootmaster: please copy/paste the text below and mail it to mackatack@gmail.com, along with an explanation of the situation.',
+        text = 'CCLootMaster: please copy/paste the text below and mail it to mackatack@gmail.com, along with an explanation of the situation.',
         button1 = nil,
         button2 = 'OK',
         timeout = 0,

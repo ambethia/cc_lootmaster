@@ -1,10 +1,10 @@
-﻿local mod = LootMaster:NewModule("EPGPLootmaster_Options")
+﻿local mod = LootMaster:NewModule("CCLootMaster_Options")
 
 --local LootMasterML = false
 
 function mod:OnEnable()
   local options = {
-    name = "EPGPLootMaster",
+    name = "CCLootMaster",
     type = "group",
     get = function(i) return LootMaster.db.profile[i[#i]] end,
     set = function(i, v) LootMaster.db.profile[i[#i]] = v end,
@@ -30,7 +30,7 @@ function mod:OnEnable()
                     order = 2,
                     type = "description",
                     hidden = function(info) return LootMasterML end,
-                    name = "\r\n\r\n|cFFFF8080WARNING: Alot of settings have been hidden because the EPGPLootmaster 'ML' module has been disabled. Please enabled it from the addon configuration screen.|r",
+                    name = "\r\n\r\n|cFFFF8080WARNING: Alot of settings have been hidden because the CCLootMaster 'ML' module has been disabled. Please enabled it from the addon configuration screen.|r",
                 },
                 
                 config_group = {
@@ -41,12 +41,12 @@ function mod:OnEnable()
                     name = "General config",
                     args = {
                         
-                        use_epgplootmaster = {
+                        use_cc_lootmaster = {
                             order = 2,
                             type = "select",
 			                width = "double",
                             set = function(i, v) 
-                                LootMaster.db.profile.use_epgplootmaster = v;
+                                LootMaster.db.profile.use_cc_lootmaster = v;
                                 if v == 'enabled' then
                                     LootMasterML:EnableTracking();
                                 elseif v == 'disabled' then
@@ -57,11 +57,11 @@ function mod:OnEnable()
                                 end                               
                                 
                             end,
-                            name = "Use EPGPLootmaster",
-                            desc = "Controls wether EPGPLootmaster is enabled or not.",
+                            name = "Use CCLootMaster",
+                            desc = "Controls wether CCLootMaster is enabled or not.",
                             values = {
-                                ['enabled'] = 'Always use EPGPLootmaster to distribute loot, without asking',
-                                ['disabled'] = 'Never use EPGPLootmaster to distribute loot',
+                                ['enabled'] = 'Always use CCLootMaster to distribute loot, without asking',
+                                ['disabled'] = 'Never use CCLootMaster to distribute loot',
                                 ['ask'] = 'Ask me every time I become loot master'
                             },
                         },
@@ -128,12 +128,12 @@ function mod:OnEnable()
                             desc = "Check this if you want your candidates to send notes to you. The notes will show up as an icon on your loot interface. You can read them by hovering the icon. This allows your candidates to send you messages such as: 'Only needed if noone else needs' or 'Item B has higher priority'. You can disable this if you feel this slows the loot distribution down.",
                         },
                         
-                        filterEPGPLootmasterMessages = {
+                        filterCCLootMasterMessages = {
                             type = "toggle",
                             order = 19,
                             width = 'full',
                             name = "Filter chat announces and whispers.",
-                            desc = "EPGPLootmaster has a nice system where even raid members who don't have EPGPLootmaster installed can need/greed/pass on items. This will be done by whispering and sending chat messages to the raid channel. Enable this option to filter all these messages from your chat.",
+                            desc = "CCLootMaster has a nice system where even raid members who don't have CCLootMaster installed can need/greed/pass on items. This will be done by whispering and sending chat messages to the raid channel. Enable this option to filter all these messages from your chat.",
                         },
                         
                         audioWarningOnSelection = {
@@ -157,7 +157,7 @@ function mod:OnEnable()
                         help = {
                             order = 0,
                             type = "description",
-                            name = "This allows you to control the automatic hiding features of EPGPLootmaster.",
+                            name = "This allows you to control the automatic hiding features of CCLootMaster.",
                         },
                                 
                         hideOnSelection = {
@@ -381,8 +381,8 @@ function mod:OnEnable()
   local config = LibStub("AceConfig-3.0")
   local dialog = LibStub("AceConfigDialog-3.0")
 
-  config:RegisterOptionsTable("EPGPLootMaster-Bliz", options)
-  dialog:AddToBlizOptions("EPGPLootMaster-Bliz", "EPGPLootMaster", nil, 'global')
-  --dialog:AddToBlizOptions("EPGPLootMaster-Bliz", "Monitor", "EPGPLootMaster", 'MonitorGroup')
+  config:RegisterOptionsTable("CCLootMaster-Bliz", options)
+  dialog:AddToBlizOptions("CCLootMaster-Bliz", "CCLootMaster", nil, 'global')
+  --dialog:AddToBlizOptions("CCLootMaster-Bliz", "Monitor", "CCLootMaster", 'MonitorGroup')
   
 end

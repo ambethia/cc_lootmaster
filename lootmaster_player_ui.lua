@@ -12,7 +12,7 @@ function LootMaster:ShowUpdateFrame( sender, iVersion, sVersion )
         return;
     end;
     self.iLastVersionResponse = iVersion;
-    message( string.format("Auto notice from %s: please update epgp_lootmaster from curse.com. If you fail to do so you might not get loot during raids.", sender, sVersion ) )
+    message( string.format("Auto notice from %s: please update cc_lootmaster from curse.com. If you fail to do so you might not get loot during raids.", sender, sVersion ) )
 end
 
 function LootMaster:InitUI()
@@ -547,7 +547,7 @@ function LootMaster:VersionActionClick(name)
     local rowID = self.versioncheckframe.members[name];
     if not rowID then return end;
     if self.versioncheckframe.rows[rowID].cols[3].value == 0 then
-        SendChatMessage("Auto message: please install EPGPLootmaster from curse.com:  http://wow.curse.com/downloads/wow-addons/details/epgp_lootmaster.aspx", "WHISPER", nil, name);
+        SendChatMessage("Auto message: please install CCLootMaster from curse.com:  http://wow.curse.com/downloads/wow-addons/details/cc_lootmaster.aspx", "WHISPER", nil, name);
     end
 end
 
