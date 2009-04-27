@@ -84,20 +84,6 @@ function LootMasterML:OnInitialize()
         end
     end
     
-    -- Warning if we're in a guild and we can edit officer notes but EPGP is not installed.
-    if IsInGuild() and CanEditOfficerNote() and not EPGP then
-        StaticPopupDialogs["EPGPLM_EPGP_NOTINSTALLED"] = {
-            text = "EPGPLootmaster Notice!\r\n\r\n|cFFFF8080WARNING:|r you have EPGPLootmaster installed but EPGP is not enabled. \r\n\r\nPlease make sure you have EPGP installed and enabled. If you fail to do so, no GP will be awarded for looted items.\r\n\r\nAll other features of EPGPLootmaster such as announcing and distributing loot will still function without EPGP.",
-            button1 = OKAY,
-            OnAccept = function() end,
-            timeout = 0,
-            whileDead = 1,
-            hideOnEscape = 0,
-            showAlert = 1
-        };
-        StaticPopup_Show("EPGPLM_EPGP_NOTINSTALLED")
-    end
-    
     -- Change the onClick script of the lootbuttons a little so we can trap alt+clicks
     -- NOTE: Only tested with normal wow lootframes, not using XLoot etc.
     for slot=1, LOOTFRAME_NUMBUTTONS do
