@@ -1281,7 +1281,7 @@ function LootMasterML:InspectCandidate( loot, candidate )
     -- inspect the candidate
     NotifyInspect(candidate)
     
-    -- Retrieve the itemlink, levels and gp value for the equipSlot.
+    -- Retrieve the itemlink and levels for the equipSlot.
     local gear = LootMaster:GetGearByINVTYPE(loot.equipLoc, candidate);
     
     local item1, item2 = strsplit('$', gear)
@@ -1340,7 +1340,7 @@ end
 --[[
 	Tries to give the loot to the given candidate
 ]]
-function LootMasterML:GiveLootToCandidate( link, candidate, lootType, gp )
+function LootMasterML:GiveLootToCandidate( link, candidate, lootType )
 
 	local candidateID = nil;
 	local slotID = nil;

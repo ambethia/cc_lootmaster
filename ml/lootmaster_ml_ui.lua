@@ -729,53 +729,13 @@ function LootMasterML:CandidateDropDownInitialize( frame, level, menuList )
             info.notCheckable = 1;
             
             if not loot.manual then
-            
-                info.isTitle = false;
-                info.disabled = not CanEditOfficerNote();
-                info.text = format( 'Give loot and award %s GP', loot.gpvalue_manual or 0 );
-                info.tooltipTitle = info.text;
-                info.tooltipText = format('Attempts to send the loot to the candidate and awards %s GP to the candidate', loot.gpvalue_manual or 0);
-                info.func = function() LootMasterML.GiveLootToCandidate(LootMasterML, LootMasterML.CandidateDropDown.selectedLink, LootMasterML.CandidateDropDown.selectedCandidate, LootMaster.LOOTTYPE.GP, loot.gpvalue_manual or 0) end;
-                UIDropDownMenu_AddButton(info,UIDROPDOWNMENU_MENU_LEVEL);
-                
-                if loot.gpvalue2 and loot.gpvalue2~=0 then
-                    info.isTitle = false;
-                    info.disabled = not CanEditOfficerNote();
-                    info.text = format( 'Give loot and award %s GP', loot.gpvalue2 or 0 );
-                    info.tooltipTitle = info.text;
-                    info.tooltipText = format('Attempts to send the loot to the candidate and awards %s GP to the candidate', loot.gpvalue2 or 0);
-                    info.func = function() LootMasterML.GiveLootToCandidate(LootMasterML, LootMasterML.CandidateDropDown.selectedLink, LootMasterML.CandidateDropDown.selectedCandidate, LootMaster.LOOTTYPE.GP, loot.gpvalue2 or 0) end;
-                    UIDropDownMenu_AddButton(info,UIDROPDOWNMENU_MENU_LEVEL);
-                end
-                
-                
-                if LootMaster.db.profile.defaultOffspecGPValue then
-                    local v = tonumber(LootMaster.db.profile.defaultOffspecGPValue) or 0
-                    local p = LootMaster.db.profile.defaultOffspecGPPercentage
-                    local vs = v
-                    local gp = tonumber(loot.gpvalue) or 0
-                    if p then
-                        gp = ceil(gp /100 * v)
-                        vs = v .. '% of ' .. (tonumber(loot.gpvalue) or 0)
-                    else
-                        gp = ceil(v)
-                    end            
-                    
-                    info.isTitle = false;
-                    info.disabled = not CanEditOfficerNote();
-                    info.text = format( 'Give loot and award %s GP for greed/offspec (%s)', gp, vs );
-                    info.tooltipTitle = info.text;
-                    info.tooltipText = format('Attempts to send the loot to the candidate and awards %s GP to the candidate for offspec use', gp);
-                    info.func = function() LootMasterML.GiveLootToCandidate(LootMasterML, LootMasterML.CandidateDropDown.selectedLink, LootMasterML.CandidateDropDown.selectedCandidate, LootMaster.LOOTTYPE.GP, gp) end;
-                    UIDropDownMenu_AddButton(info,UIDROPDOWNMENU_MENU_LEVEL);
-                end
-                
+
                 info.isTitle = false;
                 info.disabled = false;
-                info.text = 'Give loot for free';
-                info.tooltipTitle = 'Give loot for free';
-                info.tooltipText = "Attempts to send the loot to the candidate and doesn't award GP to the candidate, thus giving it for free.";
-                info.func = function() LootMasterML.GiveLootToCandidate(LootMasterML, LootMasterML.CandidateDropDown.selectedLink, LootMasterML.CandidateDropDown.selectedCandidate, LootMaster.LOOTTYPE.GP, 0 ) end;
+                info.text = 'Give loot';
+                info.tooltipTitle = 'Give loot';
+                info.tooltipText = "Attempts to send the loot to the candidate.";
+                info.func = function() LootMasterML.GiveLootToCandidate(LootMasterML, LootMasterML.CandidateDropDown.selectedLink, LootMasterML.CandidateDropDown.selectedCandidate, LootMaster.LOOTTYPE.GIVE ) end;
                 UIDropDownMenu_AddButton(info,UIDROPDOWNMENU_MENU_LEVEL);
                 
                 info.isTitle = false;

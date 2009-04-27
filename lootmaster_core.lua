@@ -103,7 +103,7 @@ function LootMaster:OnInitialize()
     -- Loot receive types.
     self.LOOTTYPE = {
         { ["CODE"]      = "UNKNOWN",        ["TEXT"] = '%s received %s for unknown reason%4$s.' },
-        { ["CODE"]      = "GP",             ["TEXT"] = '%s received %s for %s GP%s.' },
+        { ["CODE"]      = "GIVE",           ["TEXT"] = '%s received %s%4$s.' },
         { ["CODE"]      = "DISENCHANT",     ["TEXT"] = '%s received %s for disenchantment%4$s.' },
         { ["CODE"]      = "BANK",           ["TEXT"] = '%s received %s for bank%4$s.' }
     }    
@@ -394,7 +394,7 @@ function LootMaster:SlashHandler( input )
 	else
         
 		self:Print( format('%s loaded.', version) )
-        self:Print( 'This mod provides a full loot distributing system for EPGP.' )
+        self:Print( 'This mod provides a full master loot distributing system.' )
         self:Print( 'USAGE: Create a party/raid, setup a master looter. When master loot drops, just rightclick the item and the UI will open.' )
         self:Print( 'Commandline Tools:' )
         self:Print( '/lm version: Show the versionchecker' )
@@ -437,11 +437,12 @@ local INVTYPE_Slots = {
 		INVTYPE_TRINKET		    = {"TRINKET0SLOT", "TRINKET1SLOT"}
 }
 
---[[ Extract the itemlinks, gpvalue, itemlevel and texture of the players current equipment for
-    the given inventory slot.
+--[[
+  Extract the itemlinks, itemlevel and texture of the players current
+  equipment for the given inventory slot.
 ]]--
 function LootMaster:GetGearByINVTYPE( INVTYPE, unit )
-    
+
     if not unit then unit="player" end
     
 	if not INVTYPE_Slots[INVTYPE] then return '' end;
@@ -458,9 +459,8 @@ function LootMaster:GetGearByINVTYPE( INVTYPE, unit )
 		if item then tinsert(ret, item) end;
 	end
     for i, item in ipairs(ret) do
-        local _, _, _, _, _, _, _, _, _, itemTexture = GetItemInfo(item)
-        local gpvalue, gpvalue2, ilevel = GetGPValue( item );
-        ret[i] = format('%s^%s^%s^%s^%s', item, gpvalue or -1, ilevel or -1, gpvalue2 or -1, itemTexture)    
+      local _, _, _, ilevel, _, _, _, _, _, itemTexture = GetItemInfo(item)
+      ret[i] = format('%s^%s^%s', item, ilevel or -1, itemTexture)    
     end
 	return strjoin('$', unpack(ret));   
 end
@@ -824,8 +824,8 @@ end
 function LootMaster:OutputLog()
     local output = self:RecurseLogOutput(debuglog);
     
-    StaticPopupDialogs["EPGP_LOGOUTPUT_POPUP"] = {
-        text = 'CCLootMaster: please copy/paste the text below and mail it to mackatack@gmail.com, along with an explanation of the situation.',
+    StaticPopupDialogs["CCML_LOGOUTPUT_POPUP"] = {
+        text = 'CCLootMaster: please copy/paste the text below and mail it to addons@cuniculicavum.com, along with an explanation of the situation.',
         button1 = nil,
         button2 = 'OK',
         timeout = 0,
@@ -851,7 +851,7 @@ function LootMaster:OutputLog()
             ClearCursor();
         end
     };
-    StaticPopup_Show("EPGP_LOGOUTPUT_POPUP")
+    StaticPopup_Show("CCML_LOGOUTPUT_POPUP")
 end
 function LootMaster:CreateLogEntry()
     local entry = {
