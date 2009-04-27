@@ -1,10 +1,10 @@
 ## Interface: 30100
 ## Title: CCLootMaster - |cFFFF8080Core|r
-## Author: Jason L Perry
+## Author: Jason L Perry, original work by Bushmaster of Twisting Nether-EU
 ## Version: @project-version@
-## Notes: Master loot distributing system.
+## Notes: Master loot distribution system.
 ## X-Category: Guild
-## DefaultState: Enabled
+## DefaultState: enabled
 ## LoadOnDemand: 0
 ## SavedVariables: CCLootMaster
 
