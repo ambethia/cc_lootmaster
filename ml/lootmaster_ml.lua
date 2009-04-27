@@ -671,24 +671,25 @@ function LootMasterML:AskCandidateIfNeeded( link, candidate )
         self:SetCandidateResponse( loot.id, candidate, LootMaster.RESPONSE.INIT );
         
     end
-    
-    local gpGreed = tonumber(loot.gpvalue) or 0
-    if LootMaster.db.profile.defaultOffspecGPValue then
-        local v = tonumber(LootMaster.db.profile.defaultOffspecGPValue) or 0
-        local p = LootMaster.db.profile.defaultOffspecGPPercentage            
-        if p then
-            gpGreed = ceil(gpGreed /100 * v)
-        else
-            gpGreed = ceil(v)
-        end
-    end
-    
+
     local notesAllowed = 0
     if LootMaster.db.profile.allowCandidateNotes then
         notesAllowed = 1
     end
     
-    self:SendCommand( "DO_YOU_WANT", format('%s^%s^%s^%s^%s^%s^%s^%s^%s^%s^%s^%s^%s', loot.id or '', loot.gpvalue or -1, loot.ilevel or -1, loot.gpvalue2 or -1, loot.binding or '', loot.equipLoc or 0, loot.quality or 0, self.timeout or 60, loot.link, loot.texture or '', gpGreed or -1, notesAllowed, loot.classesEncoded or 0 ), candidate )
+    self:SendCommand( "DO_YOU_WANT", format(
+      '%s^%s^%s^%s^%s^%s^%s^%s^%s^%s',
+      loot.id or '',
+      loot.ilevel or -1,
+      loot.binding or '',
+      loot.equipLoc or 0,
+      loot.quality or 0,
+      self.timeout or 60,
+      loot.link,
+      loot.texture or '',
+      notesAllowed,
+      loot.classesEncoded or 0 
+    ), candidate )
 
 	-- Update the ui
 	self:ReloadMLTableForLoot( loot.id )

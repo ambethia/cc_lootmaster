@@ -58,7 +58,7 @@ function LootMaster:CommandReceived(prefix, message, distribution, sender)
 		-- Masterlooter wants to know from us if we'd like to have the item.
 		-- Lets show the gui and ask the player for input.
 
-		local itemID, gpvalue, ilevel, gpvalue2, binding, slot, quality, timeout, link, texture, gpGreed, notesAllowed, autoPassClassList = strsplit("^", message)
+		local itemID, ilevel, binding, slot, quality, timeout, link, texture, notesAllowed, autoPassClassList = strsplit("^", message)
         
         notesAllowed = ((tonumber(notesAllowed or 0) or 0) == 1)
 
@@ -80,40 +80,25 @@ function LootMaster:CommandReceived(prefix, message, distribution, sender)
                 return;
             end            
         end
-        
-        
-        if gpvalue2=='' or gpvalue2==-1 or gpvalue2=='-1' then
-            gpvalue2 = nil
-        end
-        
-        if gpGreed=='' or gpGreed==-1 or gpGreed=='-1' then
-            gpGreed = nil
-        end
-        
+
         if not self:HasLoot(link) then
-            
-            -- add the loot to the lootlist and redraw the ui
-            tinsert( self.lootList, {
-                ["lootmaster"]      = sender,
-                ["link"]            = link,
-                ["id"]              = itemID,
-                ["notesAllowed"]    = notesAllowed,
-                ["ilevel"]          = ilevel,
-                ["gpvalue"]         = gpvalue,
-                ["gpvalue2"]        = gpvalue2,
-                ["gpvalue_greed"]   = gpGreed,
-                ["binding"]         = binding,
-                ["slot"]            = slot,
-                ["texture"]         = texture,
-                ["timeout"]         = tonumber(timeout),
-                ["timeoutLeft"]     = tonumber(timeout),
-                ["quality"]         = tonumber(quality)
-            });
-            
-            self.lootMLCache[link] = sender;
-            
-            self:UpdateLootUI();
-        
+          -- add the loot to the lootlist and redraw the ui
+          tinsert( self.lootList, {
+              ["lootmaster"]      = sender,
+              ["link"]            = link,
+              ["id"]              = itemID,
+              ["notesAllowed"]    = notesAllowed,
+              ["ilevel"]          = ilevel,
+              ["binding"]         = binding,
+              ["slot"]            = slot,
+              ["texture"]         = texture,
+              ["timeout"]         = tonumber(timeout),
+              ["timeoutLeft"]     = tonumber(timeout),
+              ["quality"]         = tonumber(quality)
+          });
+          
+          self.lootMLCache[link] = sender;
+          self:UpdateLootUI();
         end
         
         
