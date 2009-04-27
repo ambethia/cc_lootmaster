@@ -102,10 +102,10 @@ function LootMaster:OnInitialize()
     
     -- Loot receive types.
     self.LOOTTYPE = {
-        { ["CODE"]      = "UNKNOWN",        ["TEXT"] = '%s received %s for unknown reason%4$s.' },
-        { ["CODE"]      = "GIVE",           ["TEXT"] = '%s received %s%4$s.' },
-        { ["CODE"]      = "DISENCHANT",     ["TEXT"] = '%s received %s for disenchantment%4$s.' },
-        { ["CODE"]      = "BANK",           ["TEXT"] = '%s received %s for bank%4$s.' }
+        { ["CODE"]      = "UNKNOWN",        ["TEXT"] = '%s received %s for unknown reason%s.' },
+        { ["CODE"]      = "GIVE",           ["TEXT"] = '%s received %s%s.' },
+        { ["CODE"]      = "DISENCHANT",     ["TEXT"] = '%s received %s for disenchantment%s.' },
+        { ["CODE"]      = "BANK",           ["TEXT"] = '%s received %s for bank%s.' }
     }    
     for i,d in ipairs(self.LOOTTYPE) do
         self.LOOTTYPE[d.CODE] = i;

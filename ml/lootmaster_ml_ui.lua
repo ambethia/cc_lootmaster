@@ -13,7 +13,7 @@ local sstScrollCols = {
        { ["name"] = " ",         ["width"] = 20, ["align"] = "CENTER" },   
        { ["name"] = "Candidate", ["width"] = 100, ["align"] = "LEFT" },    
        { ["name"] = "Rank",      ["width"] = 100, ["align"] = "LEFT" },
-       { ["name"] = "Response",  ["width"] = 210, ["align"] = "LEFT",    ["defaultsort"] = "desc", ["sort"] = "desc", ["color"] = {["r"] = 0.25, ["g"] = 1.00, ["b"] = 0.25, ["a"] = 1.0 }, ["sortnext"]=10 }, --, 
+       { ["name"] = "Response",  ["width"] = 210, ["align"] = "LEFT",    ["defaultsort"] = "desc", ["sort"] = "desc", ["color"] = {["r"] = 0.25, ["g"] = 1.00, ["b"] = 0.25, ["a"] = 1.0 }, ["sortnext"]=5 }, --, 
        { ["name"] = "Roll",      ["width"] = 35,  ["align"] = "RIGHT",   ["defaultsort"] = "asc",  ["sort"] = "asc",  ["color"] = {["r"] = 0.45, ["g"] = 0.45, ["b"] = 0.45, ["a"] = 1.0 }},
 
        { ["name"] = "Note",      ["width"] = 30,  ["align"] = "RIGHT"},
