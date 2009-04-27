@@ -71,7 +71,7 @@ function LootMaster:InitUI()
     
     local titletext = titleFrame:CreateFontString(nil,"OVERLAY","GameFontNormalSmall")
 	titletext:SetPoint("CENTER",titleFrame,"CENTER",0,1)
-	titletext:SetText( string.format("EPGPLootMaster %s by Bushmaster <Steel Alliance> - Twisting Nether EU", self:GetVersionString() ) )    
+	titletext:SetText( string.format("CCLootMaster %s", self:GetVersionString() ) )    
     frame.titleFrame = titleFrame
     --#endregion
     
@@ -629,7 +629,7 @@ function LootMaster:ShowVersionCheckFrame()
         
         local titletext = titleFrame:CreateFontString(nil,"OVERLAY","GameFontNormalSmall")
         titletext:SetPoint("CENTER",titleFrame,"CENTER",0,1)
-        titletext:SetText( string.format("EPGPLootMaster %s by Bushmaster <Steel Alliance> - Twisting Nether EU", self:GetVersionString() ) )    
+        titletext:SetText( string.format("CCLootMaster %s", self:GetVersionString() ) )    
         frame.titleFrame = titleFrame
         --#endregion
 
