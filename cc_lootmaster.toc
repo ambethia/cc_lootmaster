@@ -21,7 +21,7 @@ Libs\AceConfig-3.0\AceConfig-3.0.xml
 Libs\AceComm-3.0\AceComm-3.0.xml
 Libs\LibCompress\LibCompress.lua
 Libs\LibTalentQuery-1.0\LibTalentQuery-1.0.lua
-Libs\lib-st\embeds.xml
+Libs\lib-st\Core.lua
 
 lootmaster_core.lua
 lootmaster_player.lua
