@@ -6,7 +6,7 @@
 ## X-Category: Guild
 ## RequiredDeps: cc_lootmaster
 ## DefaultState: disabled
-## LoadOnDemand: 1
+## LoadOnDemand: 0
 lootmaster_ml.lua
 lootmaster_ml_ui.lua
 lootmaster_options.lua

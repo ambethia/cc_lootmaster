@@ -18,3 +18,7 @@ externals:
     
 move-folders:
     cc_lootmaster/ml: cc_lootmaster_ml
+
+manual-changelog:
+    filename: CHANGELOG.txt
+    markup-type: creole

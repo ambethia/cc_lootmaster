@@ -1,0 +1,4 @@
+=== v0.1.3
+
+* Added CHANGELOG.txt
+* ML Module should **not** load on demand, what was I thinking?
