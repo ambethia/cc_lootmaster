@@ -81,7 +81,7 @@ function LootMasterML:GetFrame()
     tile = true, tileSize = 64, edgeSize = 16,
     insets = { left = 4, right = 4, top = 4, bottom = 4 }
   })
-    frame:SetBackdropColor(1,0,0,1)
+    frame:SetBackdropColor(0,0,0,1)
     
     local extralootframe = CreateFrame("Frame","LootMasterMLFrameExtraLoot",frame)
     extralootframe:SetBackdrop({

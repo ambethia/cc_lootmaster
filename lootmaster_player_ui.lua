@@ -38,7 +38,7 @@ function LootMaster:InitUI()
 		tile = true, tileSize = 64, edgeSize = 12,
 		insets = { left = 2, right = 1, top = 2, bottom = 2 }
 	})
-    frame:SetBackdropColor(1,1,0,1)
+    frame:SetBackdropColor(0,0,0,1)
     frame:SetBackdropBorderColor(1,1,1,0.2)
     
     frame:SetScript("OnMouseDown", function() frame:StartMoving() end)
@@ -592,7 +592,7 @@ function LootMaster:ShowVersionCheckFrame()
             tile = true, tileSize = 64, edgeSize = 12,
             insets = { left = 2, right = 1, top = 2, bottom = 2 }
         })
-        frame:SetBackdropColor(1,1,0,1)
+        frame:SetBackdropColor(0,0,0,1)
         frame:SetBackdropBorderColor(1,1,1,0.2)
         
         frame:SetScript("OnMouseDown", function() frame:StartMoving() end)
