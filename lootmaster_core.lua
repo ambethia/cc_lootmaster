@@ -555,69 +555,74 @@ for l, _ in pairs(autopassTable) do subTypeLocalized[l]=l end;
 --   ['Druid'] = true   -- Druids should autopass
 -- }
 function LootMaster:GetItemAutoPassClasses(item)
-	if not item then return end
-	if not self.bindingtooltip then
-		self.bindingtooltip = CreateFrame("GameTooltip", "LootMasterBindingTooltip", UIParent, "GameTooltipTemplate")
-	end
-	local tip = self.bindingtooltip
-	tip:SetOwner(UIParent, "ANCHOR_NONE")
-	tip:SetHyperlink(item)
-    
-    -- lets see if we can find a 'Classes: Mage, Druid' string on the itemtooltip
-	if LootMasterBindingTooltip:NumLines() > 2 and LootMasterBindingTooltipTextLeft3:GetText() then
-        local localizedClasses = gsub( LootMasterBindingTooltipTextLeft3:GetText() or '', ', ', ',' )
-        localizedClasses = localizedClasses:match( gsub(ITEM_CLASSES_ALLOWED,"%%s","(.*)") )
+  if not item then return end
+  if not self.bindingtooltip then
+    self.bindingtooltip = CreateFrame("GameTooltip", "LootMasterBindingTooltip", UIParent, "GameTooltipTemplate")
+  end
+  local tip = self.bindingtooltip
+  tip:SetOwner(UIParent, "ANCHOR_NONE")
+  tip:SetHyperlink(item)
+  
+  -- lets see if we can find a 'Classes: Mage, Druid' string on the itemtooltip
+  -- just scan all the lines.
+  for i = 1, LootMasterBindingTooltip:NumLines(),1 do
+    local linetext = _G["LootMasterBindingTooltipTextLeft" .. i]
+    local text = linetext:GetText()
+    local localizedClasses = gsub( text or '', ', ', ',' )
+    localizedClasses = localizedClasses:match( gsub(ITEM_CLASSES_ALLOWED,"%%s","(.*)") )
+  
+    if localizedClasses then
+        -- Yep, this item is available for certain classes only          
         tip:Hide()
-        
-        if localizedClasses then
-            -- Yep, this is item is available for certain classes only
-            local autopassClasses = {
-                ['MAGE']            = true,
-                ['WARRIOR']         = true,
-                ['DEATHKNIGHT']     = true,
-                ['WARLOCK']         = true,
-                ['DRUID']           = true,
-                ['SHAMAN']          = true,
-                ['ROGUE']           = true,
-                ['PRIEST']          = true,
-                ['PALADIN']         = true,
-                ['HUNTER']          = true
-            }
-        
-            localizedClasses = {strsplit(',',localizedClasses)}
-            for i, localizedClass in ipairs(localizedClasses) do
-                local class = self:UnlocalizeClass(localizedClass);
-                
-                -- Give an error when we're unable to unlocalize the classname.
-                if not class then 
-                    self:Print(format('Unable to unlocalize %s', localizedClass));
-                    return nil;
-                end;           
-                
-                -- Found the unlocalized class, remove it from the autopass list.
-                autopassClasses[class] = nil;
-            end        
-            
-            return autopassClasses;
-        end
-	end
-    tip:Hide()
-    
-    -- Lets see if we have something in the autopassTable...
-    local itemName, _, _, _, _, _, itemSubType, _, _, _ = GetItemInfo(item)
-    if itemName and itemSubType then
-        local autopassClassArray = autopassTable[ subTypeLocalized[itemSubType] ]
-        if autopassClassArray then
-            -- There are some classes that cannot use this subtype, make the array
-            local autoPassResult = {}
-            for _, class in ipairs(autopassClassArray) do
-                autoPassResult[class] = true;
+      
+        local autopassClasses = {
+            ['MAGE']            = true,
+            ['WARRIOR']         = true,
+            ['DEATHKNIGHT']     = true,
+            ['WARLOCK']         = true,
+            ['DRUID']           = true,
+            ['SHAMAN']          = true,
+            ['ROGUE']           = true,
+            ['PRIEST']          = true,
+            ['PALADIN']         = true,
+            ['HUNTER']          = true
+        }
+  
+        localizedClasses = {strsplit(',',localizedClasses)}
+        for i, localizedClass in ipairs(localizedClasses) do
+            local class = self:UnlocalizeClass(localizedClass)
+          
+            -- Give an error when we're unable to unlocalize the classname.
+            if not class then
+                self:Print(format('Unable to unlocalize %s', localizedClass))
+                return nil;
             end
-            return autoPassResult;
+          
+            -- Found the unlocalized class, remove it from the autopass list.
+            autopassClasses[class] = nil
         end
-    end   
-	
-	return nil
+      
+        return autopassClasses
+    end
+  end
+
+  tip:Hide()
+
+  -- Lets see if we have something in the autopassTable...
+  local itemName, _, _, _, _, _, itemSubType, _, _, _ = GetItemInfo(item)
+  if itemName and itemSubType then
+      local autopassClassArray = autopassTable[ subTypeLocalized[itemSubType] ]
+      if autopassClassArray then
+          -- There are some classes that cannot use this subtype, make the array
+          local autoPassResult = {}
+          for _, class in ipairs(autopassClassArray) do
+              autoPassResult[class] = true;
+          end
+          return autoPassResult;
+      end
+  end   
+
+  return nil
 end
 
 -- localize a class by using cached strings.
